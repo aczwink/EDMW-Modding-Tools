@@ -50,6 +50,7 @@ bool ReadFileHeaders(SeekableInputStream &refInput, LinkedList<SFileHeader> &ref
 		buffer[nameLength] = 0;
 
 		fileHeader.fileName = buffer;
+		fileHeader.fileName.Replace('\\', '/'); //ssa uses windows paths
 
 		fileHeader.offset = reader.ReadUInt32();
 		refInput.Skip(4); //seems to be: offset + size -1
@@ -129,7 +130,7 @@ bool Extract(Path input, Path output)
 			lastPercentage = percentage;
 
 			stdOut << "progress:" << percentage << "%    ";
-			stdOut << "files left: " << fileHeaders.GetNumberOfElements() - i << endl;
+			stdOut << "files left: " << fileHeaders.GetNumberOfElements() - i << '\r';
 		}
 
 		Path currentPath = output / String(UTF8String(currentHeader.fileName));
