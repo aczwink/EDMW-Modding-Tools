@@ -16,18 +16,30 @@
  * You should have received a copy of the GNU General Public License
  * along with EDMW-Modding-Tools.  If not, see <http://www.gnu.org/licenses/>.
  */
+#pragma once
 #include <ACStdLib.hpp>
 using namespace ACStdLib;
-using namespace ACStdLib::UI;
 
-class MainWindow : public MainAppWindow
+enum class DBType
+{
+	CharType,
+	ByteType,
+};
+
+struct DBEntry
+{
+	DBType type;
+	uint32 count;
+	String name;
+};
+
+class DB
 {
 public:
 	//Constructor
-	MainWindow();
+	DB(XML::Element &element);
 
 private:
-	//Methods
-	void SetupChildren();
-	void SetupSelectionPanel();
+	//Members
+	FixedArray<DBEntry> entries;
 };

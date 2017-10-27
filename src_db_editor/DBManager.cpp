@@ -16,18 +16,31 @@
  * You should have received a copy of the GNU General Public License
  * along with EDMW-Modding-Tools.  If not, see <http://www.gnu.org/licenses/>.
  */
-#include <ACStdLib.hpp>
-using namespace ACStdLib;
-using namespace ACStdLib::UI;
+#include "DBManager.hpp"
 
-class MainWindow : public MainAppWindow
+//Constructor
+DBManager::DBManager()
 {
-public:
-	//Constructor
-	MainWindow();
+	for(const Path &path : Path("db"))
+	{
+		this->AddDB(Path("db") / path);
+	}
+}
 
-private:
-	//Methods
-	void SetupChildren();
-	void SetupSelectionPanel();
-};
+//Destructor
+DBManager::~DBManager()
+{
+	for(const auto &kv : this->databases)
+		delete kv.value;
+}
+
+//Private methods
+void DBManager::AddDB(const Path &dbDefFilePath)
+{
+	FileInputStream inputStream(dbDefFilePath);
+	XML::Document *doc = XML::Document::Parse(inputStream);
+
+	this->databases[dbDefFilePath.GetTitle()] = new DB(doc->GetRootElement());
+
+	delete doc;
+}

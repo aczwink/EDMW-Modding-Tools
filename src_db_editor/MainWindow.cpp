@@ -18,33 +18,68 @@
  */
 //Class header
 #include "MainWindow.hpp"
+#include "DBManager.hpp"
 
 //Constructor
 MainWindow::MainWindow()
 {
 	this->SetTitle("EDMW DB Editor");
+	this->SetupChildren();
+}
 
+//Private methods
+void MainWindow::SetupChildren()
+{
 	this->SetLayout(new HorizontalLayout);
+	this->SetupSelectionPanel();
 
-	//left panel
-	GroupBox *pLeftPanel = new GroupBox(this);
-	pLeftPanel->SetText("Left Panel");
-	pLeftPanel->SetLayout(new VerticalLayout);
+	//right panel
+	GroupBox *groupBox = new GroupBox(this);
+	groupBox->sizingPolicy.horzScale = 5;
+
+	//CTableView *editTable = new CTableView(rightPanel);
+	TreeView *editTable = new TreeView(groupBox);
+	//editTable->SetController(asd);
+}
+
+void MainWindow::SetupSelectionPanel()
+{
+	static class : public ListController
+	{
+	public:
+		//Methods
+		uint32 GetNumberOfItems() const
+		{
+			return DBManager::Get().GetDatabases().GetNumberOfElements();
+		}
+
+		String GetText(uint32 index) const
+		{
+			for(const auto &kv : DBManager::Get().GetDatabases())
+				if(index-- == 0)
+					return kv.key;
+			return "";
+		}
+	} dbController;
+
+	GroupBox *groupBox = new GroupBox(this);
+	groupBox->SetLayout(new VerticalLayout);
 
 	//first row
-	WidgetContainer *pContainer = new WidgetContainer(pLeftPanel);
-	pContainer->SetLayout(new HorizontalLayout);
+	WidgetContainer *container = new WidgetContainer(groupBox);
+	container->SetLayout(new HorizontalLayout);
 
 	//sub container
-	WidgetContainer *pSubContainer = new WidgetContainer(pContainer);
-	pSubContainer->sizingPolicy.horzScale = 2;
-	pSubContainer->SetLayout(new VerticalLayout);
+	WidgetContainer *subContainer = new WidgetContainer(container);
+	subContainer->sizingPolicy.horzScale = 2;
+	subContainer->SetLayout(new VerticalLayout);
 
 	//db file selections
-	CDropDown *pDbFileSelect = new CDropDown(pSubContainer);
-	pDbFileSelect->SetHint("Select File");
+	ComboBox *dbFileSelect = new ComboBox(subContainer);
+	dbFileSelect->SetController(dbController);
+	//dbFileSelect->SetHint("Select File");
 
-	pDbFileSelect->BindSelectionChanged(
+	dbFileSelect->BindSelectionChanged(
 		[this]()
 		{
 			stdOut << "bla" << endl;
@@ -52,43 +87,27 @@ MainWindow::MainWindow()
 		}
 	);
 
-	/*
-	for(IDbManager *const& refpManager : CDbManager::Get().GetManagers())
+	//for(IDbManager *const& refpManager : CDbManager::Get().GetManagers())
 	{
-		pDbFileSelect->AddItem(refpManager->GetFileTitle());
+		//dbFileSelect->AddItem(refpManager->GetFileTitle());
 	}
-	 */
 
 	//filter method
-	/*
-	CDropDown *pFilterMethodSelect = new CDropDown(pSubContainer);
-	pFilterMethodSelect->SetEnabled(false);
-	pFilterMethodSelect->SetHint("Filter by");
-	 */
+	ComboBox *filterMethodSelect = new ComboBox(subContainer);
+	filterMethodSelect->SetEnabled(false);
+	//filterMethodSelect->SetHint("Filter by");
 
 	//save button
-	/*
-	PushButton *pSaveButton = new PushButton(pContainer);
-	pSaveButton->sizingPolicy.SetVerticalPolicy(SizingPolicy::Policy::Preferred);
-	pSaveButton->SetEnabled(false);
-	pSaveButton->SetText("Save");
-	 */
+	PushButton *saveButton = new PushButton(container);
+	saveButton->sizingPolicy.SetVerticalPolicy(SizingPolicy::Policy::Preferred);
+	saveButton->SetEnabled(false);
+	saveButton->SetText("Save");
 
 	//second row
-	/*
-	CLineEdit *pFilterEdit = new CLineEdit(pLeftPanel);
-	pFilterEdit->SetEnabled(false);
-	 */
+	SearchBox *filterEdit = new SearchBox(groupBox);
+	filterEdit->SetEnabled(false);
 
 	//third row
-	//CTreeView *pItemTree = new CTreeView(pLeftPanel);
-
-	//right panel
-	/*
-	GroupBox *pRightPanel = new GroupBox(this);
-	pRightPanel->sizingPolicy.horzScale = 5;
-	pRightPanel->SetText("Right panel");
-	 */
-
-	//CTableView *pEditTable = new CTableView(pRightPanel);
+	TreeView *itemTree = new TreeView(groupBox);
+	itemTree->SetController(dbController);
 }

@@ -16,18 +16,39 @@
  * You should have received a copy of the GNU General Public License
  * along with EDMW-Modding-Tools.  If not, see <http://www.gnu.org/licenses/>.
  */
+#pragma once
 #include <ACStdLib.hpp>
+//Local
+#include "DB.hpp"
 using namespace ACStdLib;
-using namespace ACStdLib::UI;
 
-class MainWindow : public MainAppWindow
+class DBManager
 {
 public:
-	//Constructor
-	MainWindow();
+	//Destructor
+	~DBManager();
+
+	//Functions
+	static inline DBManager &Get()
+	{
+		static DBManager obj;
+
+		return obj;
+	}
+
+	//Inline
+	inline const Map<String, DB *> GetDatabases() const
+	{
+		return this->databases;
+	}
 
 private:
+	//Members
+	Map<String, DB *> databases;
+
+	//Constructor
+	DBManager();
+
 	//Methods
-	void SetupChildren();
-	void SetupSelectionPanel();
+	void AddDB(const Path &dbDefFilePath);
 };
