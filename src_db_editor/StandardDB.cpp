@@ -17,40 +17,39 @@
  * along with EDMW-Modding-Tools.  If not, see <http://www.gnu.org/licenses/>.
  */
 //Class header
-#include "DBManager.hpp"
-//Local
 #include "StandardDB.hpp"
+//Local
+#include "StandardDBController.hpp"
 
 //Constructor
-DBManager::DBManager()
+StandardDB::StandardDB(const String &name, const XML::Element &element) : DB(name, element),
+																		  objects(nullptr)
 {
-	for(const Path &path : Path("db"))
-	{
-		this->AddDB(Path("db") / path);
-	}
+	this->controller = new StandardDBController(this);
 }
 
 //Destructor
-DBManager::~DBManager()
+StandardDB::~StandardDB()
 {
-	this->ReleaseAll();
+	if(this->objects)
+		MemFree(this->objects);
+
+	delete this->controller;
 }
 
 //Public methods
-void DBManager::ReleaseAll()
+UI::TreeController &StandardDB::GetItemController() const
 {
-	for(const DB *const& db : this->databases)
-		delete db;
-	this->databases.Release();
+	return *this->controller;
 }
 
-//Private methods
-void DBManager::AddDB(const Path &dbDefFilePath)
+void StandardDB::Load()
 {
-	FileInputStream inputStream(dbDefFilePath);
-	XML::Document *doc = XML::Document::Parse(inputStream);
+	FileInputStream file(this->GetPath());
+	DataReader reader(false, file);
 
-	this->databases.Push(new StandardDB(dbDefFilePath.GetTitle(), doc->GetRootElement()));
-
-	delete doc;
+	this->nObjects = reader.ReadUInt32();
+	uint32 totalSize = this->nObjects * this->GetObjectSize();
+	this->objects = MemAlloc(totalSize);
+	file.ReadBytes(this->objects, totalSize);
 }

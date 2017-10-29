@@ -28,6 +28,26 @@ public:
 	//Destructor
 	~DBManager();
 
+	//Methods
+	void ReleaseAll();
+
+	//Inline
+	inline DB *GetDatabase(uint32 index) const
+	{
+		return this->databases[index];
+	}
+
+	inline DynamicArray<DB *> GetDatabases() const
+	{
+		return this->databases;
+	}
+
+	inline void LoadDB(uint32 index)
+	{
+		if(!this->databases[index]->IsLoaded())
+			this->databases[index]->Load();
+	}
+
 	//Functions
 	static inline DBManager &Get()
 	{
@@ -36,15 +56,9 @@ public:
 		return obj;
 	}
 
-	//Inline
-	inline const Map<String, DB *> GetDatabases() const
-	{
-		return this->databases;
-	}
-
 private:
 	//Members
-	Map<String, DB *> databases;
+	DynamicArray<DB *> databases;
 
 	//Constructor
 	DBManager();

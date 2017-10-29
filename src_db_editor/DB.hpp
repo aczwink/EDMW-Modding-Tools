@@ -18,28 +18,57 @@
  */
 #pragma once
 #include <ACStdLib.hpp>
+//Local
+#include "DBEntry.hpp"
+#include "definitions.hpp"
+//Namespaces
 using namespace ACStdLib;
 
-enum class DBType
-{
-	CharType,
-	ByteType,
-};
-
-struct DBEntry
-{
-	DBType type;
-	uint32 count;
-	String name;
-};
+//Global variables
+extern ConfigurationFile g_settings;
 
 class DB
 {
 public:
 	//Constructor
-	DB(XML::Element &element);
+	DB(const String &name, const XML::Element &element);
+
+	//Destructor
+	virtual ~DB(){}
+
+	//Abstract
+	virtual UI::TreeController &GetItemController() const = 0;
+	virtual void Load() = 0;
+
+	//Inline
+	inline const String &GetName() const
+	{
+		return this->name;
+	}
+
+	inline bool IsLoaded() const
+	{
+		return this->isLoaded;
+	}
+
+protected:
+	//Members
+	FixedArray<DBEntry> entries;
+
+	//Inline
+	inline uint32 GetObjectSize() const
+	{
+		return this->objectSize;
+	}
+
+	inline Path GetPath() const
+	{
+		return Path(g_settings.GetStringValue(SETTINGS_SECTION_GENERAL, SETTINGS_KEY_EDMWPATH)) / Path("Data/db") / (this->name + ".dat");
+	}
 
 private:
 	//Members
-	FixedArray<DBEntry> entries;
+	bool isLoaded;
+	String name;
+	uint32 objectSize;
 };

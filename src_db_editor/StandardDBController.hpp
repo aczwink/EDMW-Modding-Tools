@@ -16,29 +16,25 @@
  * You should have received a copy of the GNU General Public License
  * along with EDMW-Modding-Tools.  If not, see <http://www.gnu.org/licenses/>.
  */
-#include <ACStdLib.hpp>
-using namespace ACStdLib;
+//Local
+#include "StandardDB.hpp"
+//Namespaces
 using namespace ACStdLib::UI;
 
-class MainWindow : public MainAppWindow
+class StandardDBController : public ListController
 {
 public:
 	//Constructor
-	MainWindow();
+	inline StandardDBController(const StandardDB *db) : db(db){}
 
-	//Inline
-	inline void SetCurrentItem(const ControllerIndex &index)
-	{
-	}
+	//Methods
+	uint32 GetNumberOfItems() const;
+	String GetText(uint32 index) const;
 
 private:
 	//Members
-	uint32 activeDBIndex;
-
-	//Widgets
-	TreeView *itemView;
+	const StandardDB *db;
 
 	//Methods
-	void SetupChildren();
-	void SetupSelectionPanel();
+	void OnSelectionChanged() const;
 };

@@ -16,29 +16,19 @@
  * You should have received a copy of the GNU General Public License
  * along with EDMW-Modding-Tools.  If not, see <http://www.gnu.org/licenses/>.
  */
-#include <ACStdLib.hpp>
-using namespace ACStdLib;
-using namespace ACStdLib::UI;
+//Class header
+#include "DBEntry.hpp"
 
-class MainWindow : public MainAppWindow
+//Private methods
+uint32 DBEntry::GetTypeSize() const
 {
-public:
-	//Constructor
-	MainWindow();
-
-	//Inline
-	inline void SetCurrentItem(const ControllerIndex &index)
+	switch(this->type)
 	{
+		case DBType::CharType:
+		case DBType::ByteType:
+			return 1;
 	}
 
-private:
-	//Members
-	uint32 activeDBIndex;
-
-	//Widgets
-	TreeView *itemView;
-
-	//Methods
-	void SetupChildren();
-	void SetupSelectionPanel();
-};
+	NOT_IMPLEMENTED_ERROR;
+	return 0;
+}

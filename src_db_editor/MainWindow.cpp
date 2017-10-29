@@ -37,30 +37,38 @@ void MainWindow::SetupChildren()
 	GroupBox *groupBox = new GroupBox(this);
 	groupBox->sizingPolicy.horzScale = 5;
 
-	//CTableView *editTable = new CTableView(rightPanel);
-	TreeView *editTable = new TreeView(groupBox);
-	//editTable->SetController(asd);
+	TableView *editTable = new TableView(groupBox);
+	static class : public TableController
+	{
+	public:
+		//Methods
+		String GetColumnText(uint32 column) const
+		{
+			static const char *columns[] = {"Field name", "Value", "Associated value", "Comment"};
+
+			return columns[column];
+		}
+
+		uint32 GetNumberOfColumns() const
+		{
+			return 4;
+		}
+
+		uint32 GetNumberOfRows() const
+		{
+			return 5;
+		}
+
+		String GetText(uint32 row, uint32 column) const
+		{
+			return "CELL";
+		}
+	} itemEditController;
+	editTable->SetController(itemEditController);
 }
 
 void MainWindow::SetupSelectionPanel()
 {
-	static class : public ListController
-	{
-	public:
-		//Methods
-		uint32 GetNumberOfItems() const
-		{
-			return DBManager::Get().GetDatabases().GetNumberOfElements();
-		}
-
-		String GetText(uint32 index) const
-		{
-			for(const auto &kv : DBManager::Get().GetDatabases())
-				if(index-- == 0)
-					return kv.key;
-			return "";
-		}
-	} dbController;
 
 	GroupBox *groupBox = new GroupBox(this);
 	groupBox->SetLayout(new VerticalLayout);
@@ -76,21 +84,37 @@ void MainWindow::SetupSelectionPanel()
 
 	//db file selections
 	ComboBox *dbFileSelect = new ComboBox(subContainer);
+	static class DBController : public ListController
+	{
+	public:
+		//Constructor
+		inline DBController(MainWindow *mainWindow) : mainWindow(mainWindow)
+		{
+		}
+		//Methods
+		uint32 GetNumberOfItems() const
+		{
+			return DBManager::Get().GetDatabases().GetNumberOfElements();
+		}
+
+		String GetText(uint32 index) const
+		{
+			return DBManager::Get().GetDatabases()[index]->GetName();
+		}
+
+	private:
+		//Members
+		MainWindow *mainWindow;
+
+		void OnSelectionChanged() const
+		{
+			mainWindow->activeDBIndex = 0; //TODO
+			DBManager::Get().LoadDB(mainWindow->activeDBIndex);
+			mainWindow->itemView->SetController(DBManager::Get().GetDatabase(mainWindow->activeDBIndex)->GetItemController());
+		}
+	} dbController(this);
 	dbFileSelect->SetController(dbController);
 	//dbFileSelect->SetHint("Select File");
-
-	dbFileSelect->BindSelectionChanged(
-		[this]()
-		{
-			stdOut << "bla" << endl;
-			this->ShowInformationBox("bla", "blu");
-		}
-	);
-
-	//for(IDbManager *const& refpManager : CDbManager::Get().GetManagers())
-	{
-		//dbFileSelect->AddItem(refpManager->GetFileTitle());
-	}
 
 	//filter method
 	ComboBox *filterMethodSelect = new ComboBox(subContainer);
@@ -108,6 +132,5 @@ void MainWindow::SetupSelectionPanel()
 	filterEdit->SetEnabled(false);
 
 	//third row
-	TreeView *itemTree = new TreeView(groupBox);
-	itemTree->SetController(dbController);
+	this->itemView = new TreeView(groupBox);
 }

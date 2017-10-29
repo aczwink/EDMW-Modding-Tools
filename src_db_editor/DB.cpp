@@ -20,10 +20,12 @@
 #include "DB.hpp"
 
 //Constructor
-DB::DB(XML::Element &element) : entries(element.GetChildren().GetNumberOfElements())
+DB::DB(const String &name, const XML::Element &element) :isLoaded(false),
+														 name(name),
+														 entries(element.GetChildren().GetNumberOfElements())
 {
-	uint32 index = 0;
-	for(XML::Node *const& entry : element)
+	uint32 index = 0, offset = 0;
+	for(const XML::Node *const& entry : element)
 	{
 		ASSERT(entry->GetType() == XML::NodeType::Element);
 		XML::Element const& entryElement = *(XML::Element *)entry;
@@ -37,12 +39,19 @@ DB::DB(XML::Element &element) : entries(element.GetChildren().GetNumberOfElement
 		else if(entryElement.GetAttribute("type") == "char")
 			dbEntry.type = DBType::CharType;
 		else
-			NOT_IMPLEMENTED_ERROR;
+		NOT_IMPLEMENTED_ERROR;
 
 		//name
 		dbEntry.name = entryElement.GetAttribute("name");
 
 		//count
 		dbEntry.count = static_cast<uint32>(StringToUInt64(entryElement.GetAttribute("count")));
+
+		//offset
+		dbEntry.offset = offset;
+
+		offset += dbEntry.GetSize();
 	}
+
+	this->objectSize = offset;
 }

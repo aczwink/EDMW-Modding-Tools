@@ -16,29 +16,31 @@
  * You should have received a copy of the GNU General Public License
  * along with EDMW-Modding-Tools.  If not, see <http://www.gnu.org/licenses/>.
  */
-#include <ACStdLib.hpp>
-using namespace ACStdLib;
-using namespace ACStdLib::UI;
+//Class header
+#include "StandardDBController.hpp"
+//Local
+#include "MainWindow.hpp"
 
-class MainWindow : public MainAppWindow
+//Public methods
+uint32 StandardDBController::GetNumberOfItems() const
 {
-public:
-	//Constructor
-	MainWindow();
+	return this->db->nObjects;
+}
 
-	//Inline
-	inline void SetCurrentItem(const ControllerIndex &index)
+String StandardDBController::GetText(uint32 index) const
+{
+	return "TODO: implement me";
+}
+
+//Private methods
+void StandardDBController::OnSelectionChanged() const
+{
+	if(!this->view->GetSelectionController().GetSelectedIndexes().IsEmpty())
 	{
+		uint32 selectedRow = this->view->GetSelectionController().GetSelectedIndexes()[0].GetRow();
+
+		extern MainWindow *g_mainWindow;
+
+		g_mainWindow->SetCurrentItem(this->CreateIndex(selectedRow, 0, nullptr));
 	}
-
-private:
-	//Members
-	uint32 activeDBIndex;
-
-	//Widgets
-	TreeView *itemView;
-
-	//Methods
-	void SetupChildren();
-	void SetupSelectionPanel();
-};
+}

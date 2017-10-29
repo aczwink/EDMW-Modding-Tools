@@ -16,29 +16,33 @@
  * You should have received a copy of the GNU General Public License
  * along with EDMW-Modding-Tools.  If not, see <http://www.gnu.org/licenses/>.
  */
+#pragma once
 #include <ACStdLib.hpp>
+//Namespaces
 using namespace ACStdLib;
-using namespace ACStdLib::UI;
 
-class MainWindow : public MainAppWindow
+enum class DBType
+{
+	CharType,
+	ByteType,
+};
+
+class DBEntry
 {
 public:
-	//Constructor
-	MainWindow();
+	//Members
+	DBType type;
+	uint32 count;
+	String name;
+	uint32 offset;
 
 	//Inline
-	inline void SetCurrentItem(const ControllerIndex &index)
+	inline uint32 GetSize() const
 	{
+		return this->GetTypeSize() * this->count;
 	}
 
 private:
-	//Members
-	uint32 activeDBIndex;
-
-	//Widgets
-	TreeView *itemView;
-
 	//Methods
-	void SetupChildren();
-	void SetupSelectionPanel();
+	uint32 GetTypeSize() const;
 };
