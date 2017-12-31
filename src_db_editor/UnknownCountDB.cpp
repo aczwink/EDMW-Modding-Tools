@@ -16,33 +16,20 @@
  * You should have received a copy of the GNU General Public License
  * along with EDMW-Modding-Tools.  If not, see <http://www.gnu.org/licenses/>.
  */
-#pragma once
-#include <ACStdLib.hpp>
-//Namespaces
-using namespace ACStdLib;
+//Class header
+#include "UnknownCountDB.hpp"
 
-enum class DBType
+//Public methods
+void UnknownCountDB::Load()
 {
-	CharType,
-	ByteType,
-};
+	FileInputStream file(this->GetPath());
+	DataReader reader(false, file);
 
-class DBEntry
-{
-public:
-	//Members
-	DBType type;
-	uint32 count;
-	String name;
-	uint32 offset;
+	this->nObjects = static_cast<uint32>(file.GetSize() / this->GetObjectSize());
+	uint32 totalSize = this->nObjects * this->GetObjectSize();
+	ASSERT(file.GetRemainingBytes() == totalSize);
+	this->objects = MemAlloc(totalSize);
+	file.ReadBytes(this->objects, totalSize);
 
-	//Inline
-	inline uint32 GetSize() const
-	{
-		return this->GetTypeSize() * this->count;
-	}
-
-private:
-	//Methods
-	uint32 GetTypeSize() const;
-};
+	this->isLoaded = true;
+}

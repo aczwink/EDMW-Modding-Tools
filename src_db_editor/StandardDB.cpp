@@ -43,6 +43,12 @@ UI::TreeController &StandardDB::GetItemController() const
 	return *this->controller;
 }
 
+const void *StandardDB::GetObjectPointer(const ControllerIndex &index) const
+{
+	const byte *p = static_cast<const byte *>(this->objects);
+	return &p[index.GetRow() * this->GetObjectSize()];
+}
+
 void StandardDB::Load()
 {
 	FileInputStream file(this->GetPath());
@@ -50,6 +56,9 @@ void StandardDB::Load()
 
 	this->nObjects = reader.ReadUInt32();
 	uint32 totalSize = this->nObjects * this->GetObjectSize();
+	ASSERT(file.GetRemainingBytes() == totalSize);
 	this->objects = MemAlloc(totalSize);
 	file.ReadBytes(this->objects, totalSize);
+
+	this->isLoaded = true;
 }

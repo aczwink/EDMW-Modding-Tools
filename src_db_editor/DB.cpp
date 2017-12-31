@@ -25,27 +25,40 @@ DB::DB(const String &name, const XML::Element &element) :isLoaded(false),
 														 entries(element.GetChildren().GetNumberOfElements())
 {
 	uint32 index = 0, offset = 0;
-	for(const XML::Node *const& entry : element)
+	for(const XML::Node *const& field : element)
 	{
-		ASSERT(entry->GetType() == XML::NodeType::Element);
-		XML::Element const& entryElement = *(XML::Element *)entry;
-		ASSERT(entryElement.GetName() == "entry");
+		ASSERT(field->GetType() == XML::NodeType::Element);
+		XML::Element const& fieldElement = *(XML::Element *)field;
+		ASSERT(fieldElement.GetName() == "field");
 
-		DBEntry &dbEntry = this->entries[index++];
+		DBField &dbEntry = this->entries[index++];
 
 		//type
-		if(entryElement.GetAttribute("type") == "byte")
+		if(fieldElement.GetAttribute("type") == "bool")
+			dbEntry.type = DBType::Bool;
+		else if(fieldElement.GetAttribute("type") == "byte")
 			dbEntry.type = DBType::ByteType;
-		else if(entryElement.GetAttribute("type") == "char")
+		else if(fieldElement.GetAttribute("type") == "char")
 			dbEntry.type = DBType::CharType;
+		else if(fieldElement.GetAttribute("type") == "float32")
+			dbEntry.type = DBType::Float32;
+		else if(fieldElement.GetAttribute("type") == "uint32")
+			dbEntry.type = DBType::UInt32;
 		else
 		NOT_IMPLEMENTED_ERROR;
 
 		//name
-		dbEntry.name = entryElement.GetAttribute("name");
+		dbEntry.name = fieldElement.GetAttribute("name");
 
 		//count
-		dbEntry.count = static_cast<uint32>(StringToUInt64(entryElement.GetAttribute("count")));
+		if(fieldElement.HasAttribute("count"))
+			dbEntry.count = static_cast<uint32>(StringToUInt64(fieldElement.GetAttribute("count")));
+		else
+			dbEntry.count = 1;
+
+		//comment
+		if(fieldElement.HasAttribute("comment"))
+			dbEntry.comment = fieldElement.GetAttribute("comment");
 
 		//offset
 		dbEntry.offset = offset;

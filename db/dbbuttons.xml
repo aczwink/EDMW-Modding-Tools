@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Database>
+	<field type="char" name="Identifier" count="100" />
+	<field type="char" name="Texture filename" count="100" />
+	<field type="uint32" name="Unknown integer" unknown="yes" />
+	<field type="uint32" name="Unknown integer" unknown="yes" comment="this is somehow related to objects and techtrees button id... above figure could also be an id..." />
+	<field type="uint32" name="Zero" count="2" constant="yes" />
+	<field type="uint32" name="Button position" comment="row-wise left to right (1-10 = first row)" />
+	<field type="uint32" name="Max integer" constant="yes" />
+	<field type="uint32" name="Unknown integer" unknown="yes" />
+</Database>

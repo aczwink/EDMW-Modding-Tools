@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Database>
+	<field type="char" name="Identifier" count="100" />
+	<field type="uint32" name="Unknown integers" count="5" unknown="yes" />
+	<field type="float32" name="Unknown floats" count="3" unknown="yes" />
+	<field type="uint32" name="Unknown integers" count="10" unknown="yes" />
+	<field type="float32" name="Unknown floats" count="12" unknown="yes" />
+	<field type="bool" name="Unknown bools" count="4" unknown="yes" />
+	<field type="uint32" name="Unknown integers" count="2" unknown="yes" />
+</Database>

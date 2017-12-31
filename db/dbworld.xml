@@ -1,0 +1,5 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Database>
+	<field type="float32" name="Unknown float" unknown="yes" />
+	<field type="uint32" name="Unknown integers" count="7" unknown="yes" />
+</Database>

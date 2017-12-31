@@ -16,19 +16,17 @@
  * You should have received a copy of the GNU General Public License
  * along with EDMW-Modding-Tools.  If not, see <http://www.gnu.org/licenses/>.
  */
-//Class header
-#include "DBEntry.hpp"
+//Local
+#include "StandardDB.hpp"
 
-//Private methods
-uint32 DBEntry::GetTypeSize() const
+class UnknownCountDB : public StandardDB
 {
-	switch(this->type)
+public:
+	//Constructor
+	inline UnknownCountDB(const String &name, const XML::Element &element) : StandardDB(name, element)
 	{
-		case DBType::CharType:
-		case DBType::ByteType:
-			return 1;
 	}
 
-	NOT_IMPLEMENTED_ERROR;
-	return 0;
-}
+	//Methods
+	void Load();
+};

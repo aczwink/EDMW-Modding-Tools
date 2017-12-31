@@ -34,6 +34,8 @@ public:
 	//Inline
 	inline DB *GetDatabase(uint32 index) const
 	{
+		if(index >= this->databases.GetNumberOfElements())
+			return nullptr;
 		return this->databases[index];
 	}
 

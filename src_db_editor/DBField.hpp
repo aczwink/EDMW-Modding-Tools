@@ -16,36 +16,40 @@
  * You should have received a copy of the GNU General Public License
  * along with EDMW-Modding-Tools.  If not, see <http://www.gnu.org/licenses/>.
  */
-//Local
-#include "ItemFieldsController.hpp"
+#pragma once
+#include <ACStdLib.hpp>
+//Namespaces
+using namespace ACStdLib;
 
-class MainWindow : public MainAppWindow
+enum class DBType
+{
+	CharType,
+	Bool,
+	ByteType,
+	Float32,
+	UInt32
+};
+
+class DBField
 {
 public:
-	//Constructor
-	MainWindow();
+	//Members
+	DBType type;
+	uint32 count;
+	String name;
+	String comment;
+	uint32 offset;
+
+	//Methods
+	String ValueToString(const void *p) const;
 
 	//Inline
-	inline uint32 GetActiveDBIndex() const
+	inline uint32 GetSize() const
 	{
-		return this->activeDBIndex;
-	}
-
-	inline void SetCurrentItem(const ControllerIndex &index)
-	{
-		this->itemFieldsController.activeItemIndex = index;
-		this->itemFieldsController.ModelChanged();
+		return this->GetTypeSize() * this->count;
 	}
 
 private:
-	//Members
-	uint32 activeDBIndex;
-
-	//UI
-	TreeView *itemView;
-	ItemFieldsController itemFieldsController;
-
 	//Methods
-	void SetupChildren();
-	void SetupSelectionPanel();
+	uint32 GetTypeSize() const;
 };

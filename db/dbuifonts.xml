@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Database>
+	<field type="char" name="Identifier" count="100" />
+	<field type="uint32" name="Unknown integers" count="2" unknown="yes" />
+	<field type="uint32" name="Font type" comment="0 = None, 1 = Arial, 2 = Times New Roman, 3 = Courier New, 4 = Tahoma, 5 = Georgia" />
+	<field type="uint32" name="Font size" />
+	<field type="uint32" name="Unknown" unknown="yes" comment="0 when Low Quality... else 2" />
+	<field type="bool" name="Is bold" />
+	<field type="bool" name="False" constant="yes" />
+	<field type="bool" name="Is underlined" />
+	<field type="bool" name="Is shadowed" />
+	<field type="uint32" name="Zero" constant="yes" />
+</Database>

@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Database>
+	<field type="uint32" name="Unknown integers" count="2" unknown="yes" />
+	<field type="char" name="Identifier" count="100" />
+	<field type="uint32" name="Unknown integer" unknown="yes" />
+	<field type="uint32" name="Name string id" association="$LANG$" unknown="yes" />
+	<field type="uint32" name="Epoch-range string id" association="$LANG$" unknown="yes" />
+	<field type="uint32" name="Civilization tech id" unknown="yes" />
+</Database>

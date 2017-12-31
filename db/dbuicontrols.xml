@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Database>
+	<field type="char" name="Identifier" count="100" />
+	<field type="byte" name="Unknown" count="500" unknown="yes" />
+	<field type="float32" name="Unknown" count="3" unknown="yes" />
+	<field type="uint32" name="Zero" count="5" constant="yes" />
+	<field type="float32" name="Unknown" count="4" unknown="yes" />
+	<field type="uint32" name="Zero" constant="yes" />
+	<field type="float32" name="Unknown" unknown="yes" />
+	<field type="byte" name="Unknown" count="64" unknown="yes" />
+	<field type="uint32" name="String Id" association="$LANG$" />
+	<field type="byte" name="Unknown" count="212" unknown="yes" />
+	<field type="uint32" name="Unknown flags" comment="a bit field, values are: 0x100 0000, 0x100 0100, 0x101 0000, 0x101 0100, 0x100" unknown="yes" />
+	<field type="uint32" name="Unknown flags" comment="seems to be a bool value... mostly 0, 3 times 1" unknown="yes" />
+</Database>

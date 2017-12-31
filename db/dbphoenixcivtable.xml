@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Database>
+	<field type="uint32" name="Unknown integers" count="2" unknown="yes" />
+	<field type="char" name="Identifier" count="100" />
+	<field type="uint32" name="Unknown integers" count="25" unknown="yes" />
+	<field type="uint32" name="Name string id" association="$LANG$" />
+	<field type="uint32" name="Unknown integers" count="25" unknown="yes" />
+	<field type="float32" name="Unknown floats" count="3" unknown="yes" />
+	<field type="uint32" name="Unknown integer" unknown="yes" />
+	<field type="float32" name="Unknown float" unknown="yes" />
+	<field type="uint32" name="Unknown integers" count="3" unknown="yes" />
+</Database>

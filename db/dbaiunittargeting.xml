@@ -1,5 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<entries>
-	<entry type="char" name="Identifier" count="100" />
-	<entry type="byte" name="unknown" count="60" />
-</entries>
+<Database>
+	<field type="char" name="Identifier" count="100" />
+	<field type="uint32" name="One-based index" unknown="yes" comment="index in file. TODO: what happens if we change this? what happens if this gets a wrong or double used value?" />
+	<field type="uint32" name="Zero-based index" unknown="yes" comment="index in file. TODO: what happens if we change this? what happens if this gets a wrong or double used value?" />
+	<field type="uint32" name="Unknown integers" count="5" unknown="yes" />
+	<field type="uint32" name="Zero" constant="yes" />
+	<field type="uint32" name="Unknown integers" count="3" unknown="yes" />
+	<field type="uint32" name="Unknown integers" comment="all are exactly the zero based index" count="3" unknown="yes" />
+	<field type="uint32" name="Unknown" unknown="yes" />
+</Database>

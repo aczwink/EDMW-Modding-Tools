@@ -35,11 +35,15 @@ public:
 
 	//Methods
 	UI::TreeController &GetItemController() const;
-	void Load();
+	const void *GetObjectPointer(const UI::ControllerIndex &index) const;
+	virtual void Load();
 
-private:
+protected:
 	//Members
 	uint32 nObjects;
 	void *objects;
+
+private:
+	//Members
 	StandardDBController *controller;
 };

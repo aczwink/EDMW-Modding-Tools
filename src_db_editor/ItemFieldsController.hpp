@@ -16,36 +16,44 @@
  * You should have received a copy of the GNU General Public License
  * along with EDMW-Modding-Tools.  If not, see <http://www.gnu.org/licenses/>.
  */
+#pragma once
+#include <ACStdLib.hpp>
 //Local
-#include "ItemFieldsController.hpp"
+#include "DB.hpp"
+//Namespaces
+using namespace ACStdLib;
+using namespace ACStdLib::UI;
 
-class MainWindow : public MainAppWindow
+//Forward declarations
+class MainWindow;
+
+class ItemFieldsController : public TableController
 {
 public:
+	//Members
+	ControllerIndex activeItemIndex;
+
 	//Constructor
-	MainWindow();
+	ItemFieldsController(const MainWindow &mainWindow);
 
-	//Inline
-	inline uint32 GetActiveDBIndex() const
-	{
-		return this->activeDBIndex;
-	}
+	//Methods
+	String GetColumnText(uint32 column) const;
+	uint32 GetNumberOfRows() const;
+	String GetText(uint32 row, uint32 column) const;
 
-	inline void SetCurrentItem(const ControllerIndex &index)
+
+
+
+
+	uint32 GetNumberOfColumns() const
 	{
-		this->itemFieldsController.activeItemIndex = index;
-		this->itemFieldsController.ModelChanged();
+		return 4;
 	}
 
 private:
 	//Members
-	uint32 activeDBIndex;
-
-	//UI
-	TreeView *itemView;
-	ItemFieldsController itemFieldsController;
+	const MainWindow &mainWindow;
 
 	//Methods
-	void SetupChildren();
-	void SetupSelectionPanel();
+	DB *GetActiveDB() const;
 };

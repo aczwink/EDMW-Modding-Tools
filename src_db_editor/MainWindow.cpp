@@ -21,8 +21,10 @@
 #include "DBManager.hpp"
 
 //Constructor
-MainWindow::MainWindow()
+MainWindow::MainWindow() : itemFieldsController(*this)
 {
+	this->activeDBIndex = Natural<uint32>::Max();
+
 	this->SetTitle("EDMW DB Editor");
 	this->SetupChildren();
 }
@@ -38,33 +40,7 @@ void MainWindow::SetupChildren()
 	groupBox->sizingPolicy.horzScale = 5;
 
 	TableView *editTable = new TableView(groupBox);
-	static class : public TableController
-	{
-	public:
-		//Methods
-		String GetColumnText(uint32 column) const
-		{
-			static const char *columns[] = {"Field name", "Value", "Associated value", "Comment"};
-
-			return columns[column];
-		}
-
-		uint32 GetNumberOfColumns() const
-		{
-			return 4;
-		}
-
-		uint32 GetNumberOfRows() const
-		{
-			return 5;
-		}
-
-		String GetText(uint32 row, uint32 column) const
-		{
-			return "CELL";
-		}
-	} itemEditController;
-	editTable->SetController(itemEditController);
+	editTable->SetController(this->itemFieldsController);
 }
 
 void MainWindow::SetupSelectionPanel()
@@ -108,7 +84,7 @@ void MainWindow::SetupSelectionPanel()
 
 		void OnSelectionChanged() const
 		{
-			mainWindow->activeDBIndex = 0; //TODO
+			mainWindow->activeDBIndex = this->view->GetSelectionController().GetSelectedIndexes()[0].GetRow();
 			DBManager::Get().LoadDB(mainWindow->activeDBIndex);
 			mainWindow->itemView->SetController(DBManager::Get().GetDatabase(mainWindow->activeDBIndex)->GetItemController());
 		}

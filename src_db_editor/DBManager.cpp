@@ -20,13 +20,15 @@
 #include "DBManager.hpp"
 //Local
 #include "StandardDB.hpp"
+#include "UnknownCountDB.hpp"
 
 //Constructor
 DBManager::DBManager()
 {
 	for(const Path &path : Path("db"))
 	{
-		this->AddDB(Path("db") / path);
+		if(!path.IsDirectory() && path.GetFileExtension() == "xml")
+			this->AddDB(Path("db") / path);
 	}
 }
 
@@ -50,7 +52,24 @@ void DBManager::AddDB(const Path &dbDefFilePath)
 	FileInputStream inputStream(dbDefFilePath);
 	XML::Document *doc = XML::Document::Parse(inputStream);
 
-	this->databases.Push(new StandardDB(dbDefFilePath.GetTitle(), doc->GetRootElement()));
+	const XML::Element &root = doc->GetRootElement();
+	ASSERT(root.GetName() == "Database");
+
+	if(root.HasAttribute("type"))
+	{
+		if(root.GetAttribute("type") == "List_UnknownCount")
+		{
+			this->databases.Push(new UnknownCountDB(dbDefFilePath.GetTitle(), root));
+		}
+		else
+		{
+			NOT_IMPLEMENTED_ERROR;
+		}
+	}
+	else
+	{
+		this->databases.Push(new StandardDB(dbDefFilePath.GetTitle(), root));
+	}
 
 	delete doc;
 }
