@@ -1,0 +1,4 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Database>
+	<field type="char" name="Identifier" count="100" filterable="yes" />
+</Database>

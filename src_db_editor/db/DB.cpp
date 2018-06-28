@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2017 Amir Czwink (amir130@hotmail.de)
+ * Copyright (c) 2017-2018 Amir Czwink (amir130@hotmail.de)
  *
  * This file is part of EDMW-Modding-Tools.
  *
@@ -18,20 +18,22 @@
  */
 //Class header
 #include "DB.hpp"
+//Local
+#include "Object.hpp"
 
 //Constructor
 DB::DB(const String &name, const XML::Element &element) :isLoaded(false),
 														 name(name),
-														 entries(element.GetChildren().GetNumberOfElements())
+														 fields(element.GetChildren().GetNumberOfElements())
 {
 	uint32 index = 0, offset = 0;
 	for(const XML::Node *const& field : element)
 	{
-		ASSERT(field->GetType() == XML::NodeType::Element);
+		ASSERT(field->GetType() == XML::NodeType::Element, u8"If you see this, please report");
 		XML::Element const& fieldElement = *(XML::Element *)field;
-		ASSERT(fieldElement.GetName() == "field");
+		ASSERT(fieldElement.GetName() == "field", u8"If you see this, please report");
 
-		DBField &dbEntry = this->entries[index++];
+		DBField &dbEntry = this->fields[index];
 
 		//type
 		if(fieldElement.GetAttribute("type") == "bool")
@@ -52,7 +54,7 @@ DB::DB(const String &name, const XML::Element &element) :isLoaded(false),
 
 		//count
 		if(fieldElement.HasAttribute("count"))
-			dbEntry.count = static_cast<uint32>(StringToUInt64(fieldElement.GetAttribute("count")));
+			dbEntry.count = fieldElement.GetAttribute("count").ToUInt32();
 		else
 			dbEntry.count = 1;
 
@@ -60,11 +62,62 @@ DB::DB(const String &name, const XML::Element &element) :isLoaded(false),
 		if(fieldElement.HasAttribute("comment"))
 			dbEntry.comment = fieldElement.GetAttribute("comment");
 
+		//filterable
+		if(fieldElement.HasAttribute("filterable"))
+			this->filterableFields.Push(index);
+
 		//offset
 		dbEntry.offset = offset;
 
 		offset += dbEntry.GetSize();
+
+		index++;
 	}
 
 	this->objectSize = offset;
+}
+
+//Destructor
+DB::~DB()
+{
+	for(const auto &object : this->objects)
+		delete object;
+}
+
+//Protected methods
+Object *DB::LoadObject(InputStream &inputStream)
+{
+	Object *row = new Object(*this);
+
+	uint32 i = 0;
+	for(const auto &field : this->fields)
+	{
+		switch(field.type)
+		{
+			case DBType::CharType:
+			{
+				TextReader textReader(inputStream, TextCodecType::ASCII);
+
+				String string = textReader.ReadString(100);
+				row->SetValue(i, string);
+			}
+				break;
+			case DBType::Bool:
+			NOT_IMPLEMENTED_ERROR;
+				break;
+			case DBType::ByteType:
+			NOT_IMPLEMENTED_ERROR;
+				break;
+			case DBType::Float32:
+			NOT_IMPLEMENTED_ERROR;
+				break;
+			case DBType::UInt32:
+			NOT_IMPLEMENTED_ERROR;
+				break;
+		}
+
+		i++;
+	}
+
+	return row;
 }

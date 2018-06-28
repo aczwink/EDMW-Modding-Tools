@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2017 Amir Czwink (amir130@hotmail.de)
+ * Copyright (c) 2017-2018 Amir Czwink (amir130@hotmail.de)
  *
  * This file is part of EDMW-Modding-Tools.
  *
@@ -19,34 +19,25 @@
 //Class header
 #include "StandardDB.hpp"
 //Local
-#include "StandardDBController.hpp"
+#include "../ui/ItemsController.hpp"
 
 //Constructor
-StandardDB::StandardDB(const String &name, const XML::Element &element) : DB(name, element),
-																		  objects(nullptr)
+StandardDB::StandardDB(const String &name, const XML::Element &element) : DB(name, element)
 {
-	this->controller = new StandardDBController(this);
 }
 
 //Destructor
 StandardDB::~StandardDB()
 {
-	if(this->objects)
-		MemFree(this->objects);
-
-	delete this->controller;
 }
 
 //Public methods
-UI::TreeController &StandardDB::GetItemController() const
-{
-	return *this->controller;
-}
-
 const void *StandardDB::GetObjectPointer(const ControllerIndex &index) const
 {
-	const byte *p = static_cast<const byte *>(this->objects);
-	return &p[index.GetRow() * this->GetObjectSize()];
+	//NOT_IMPLEMENTED_ERROR; //TODO: new implementation
+	//const byte *p = static_cast<const byte *>(this->asd);
+	//return &p[index.GetRow() * this->GetObjectSize()];
+	return nullptr;
 }
 
 void StandardDB::Load()
@@ -54,11 +45,16 @@ void StandardDB::Load()
 	FileInputStream file(this->GetPath());
 	DataReader reader(false, file);
 
-	this->nObjects = reader.ReadUInt32();
-	uint32 totalSize = this->nObjects * this->GetObjectSize();
-	ASSERT(file.GetRemainingBytes() == totalSize);
-	this->objects = MemAlloc(totalSize);
-	file.ReadBytes(this->objects, totalSize);
+	uint32 nObjects = reader.ReadUInt32();
+	for(uint32 i = 0; i < nObjects; i++)
+	{
+		Object *row = this->LoadObject(file);
+		this->objects.Push(row);
+		break; //TODO
+	}
+	file.Skip(file.GetRemainingBytes()); //TODO
 
+	ASSERT(file.GetRemainingBytes() == 0, u8"If you see this, please report");
 	this->isLoaded = true;
 }
+

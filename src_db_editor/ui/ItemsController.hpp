@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2017 Amir Czwink (amir130@hotmail.de)
+ * Copyright (c) 2017-2018 Amir Czwink (amir130@hotmail.de)
  *
  * This file is part of EDMW-Modding-Tools.
  *
@@ -16,20 +16,24 @@
  * You should have received a copy of the GNU General Public License
  * along with EDMW-Modding-Tools.  If not, see <http://www.gnu.org/licenses/>.
  */
-//Class header
-#include "UnknownCountDB.hpp"
+#pragma once
+//Local
+#include "../db/StandardDB.hpp"
+//Namespaces
+using namespace ACStdLib::UI;
 
-//Public methods
-void UnknownCountDB::Load()
+class ItemsController : public TreeController
 {
-	FileInputStream file(this->GetPath());
-	DataReader reader(false, file);
+public:
+	//Methods
+	ControllerIndex GetChildIndex(uint32 row, uint32 column, const ControllerIndex &parent) const;
+	String GetColumnText(uint32 column) const;
+	uint32 GetNumberOfChildren(const ControllerIndex &parent) const;
+	uint32 GetNumberOfColumns() const;
+	ControllerIndex GetParentIndex(const ControllerIndex &index) const;
+	String GetText(const ControllerIndex &index) const;
 
-	this->nObjects = static_cast<uint32>(file.GetSize() / this->GetObjectSize());
-	uint32 totalSize = this->nObjects * this->GetObjectSize();
-	ASSERT(file.GetRemainingBytes() == totalSize);
-	this->objects = MemAlloc(totalSize);
-	file.ReadBytes(this->objects, totalSize);
-
-	this->isLoaded = true;
-}
+private:
+	//Methods
+	void OnSelectionChanged() const;
+};

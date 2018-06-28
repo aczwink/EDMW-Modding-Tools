@@ -17,43 +17,23 @@
  * along with EDMW-Modding-Tools.  If not, see <http://www.gnu.org/licenses/>.
  */
 #pragma once
-#include <ACStdLib.hpp>
 //Local
 #include "DB.hpp"
-//Namespaces
-using namespace ACStdLib;
-using namespace ACStdLib::UI;
 
 //Forward declarations
-class MainWindow;
+class ItemsController;
 
-class ItemFieldsController : public TableController
+class StandardDB : public DB
 {
+	friend class ItemsController;
 public:
-	//Members
-	ControllerIndex activeItemIndex;
-
 	//Constructor
-	ItemFieldsController(const MainWindow &mainWindow);
+	StandardDB(const String &name, const XML::Element &element);
+
+	//Destructor
+	~StandardDB();
 
 	//Methods
-	String GetColumnText(uint32 column) const;
-	uint32 GetNumberOfRows() const;
-	String GetText(uint32 row, uint32 column) const;
-
-
-
-
-
-	uint32 GetNumberOfColumns() const
-	{
-		return 4;
-	}
-
-private:
-	//Members
-	const MainWindow &mainWindow;
-
-	//Methods
-	DB *GetActiveDB() const;
+	const void *GetObjectPointer(const UI::ControllerIndex &index) const;
+	virtual void Load();
 };

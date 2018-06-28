@@ -17,33 +17,34 @@
  * along with EDMW-Modding-Tools.  If not, see <http://www.gnu.org/licenses/>.
  */
 #pragma once
+#include <ACStdLib.hpp>
 //Local
-#include "DB.hpp"
+#include "../db/DB.hpp"
+//Namespaces
+using namespace ACStdLib;
+using namespace ACStdLib::UI;
 
 //Forward declarations
-class StandardDBController;
+class MainWindow;
 
-class StandardDB : public DB
+class ItemFieldsController : public TreeController
 {
-	friend class StandardDBController;
 public:
-	//Constructor
-	StandardDB(const String &name, const XML::Element &element);
+	//Members
+	ControllerIndex activeItemIndex;
 
-	//Destructor
-	~StandardDB();
+	//Constructor
+	ItemFieldsController(const MainWindow &mainWindow);
 
 	//Methods
-	UI::TreeController &GetItemController() const;
-	const void *GetObjectPointer(const UI::ControllerIndex &index) const;
-	virtual void Load();
-
-protected:
-	//Members
-	uint32 nObjects;
-	void *objects;
+	ControllerIndex GetChildIndex(uint32 row, uint32 column, const ControllerIndex &parent) const override;
+	String GetColumnText(uint32 column) const;
+	uint32 GetNumberOfChildren(const ControllerIndex &parent) const override;
+	uint32 GetNumberOfColumns() const;
+	ControllerIndex GetParentIndex(const ControllerIndex &index) const override;
+	String GetText(const ControllerIndex &index) const override;
 
 private:
 	//Members
-	StandardDBController *controller;
+	const MainWindow &mainWindow;
 };

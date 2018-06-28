@@ -19,7 +19,7 @@
 //Local
 #include "MainWindow.hpp"
 #include "definitions.hpp"
-#include "DBManager.hpp"
+#include "db/DBManager.hpp"
 
 //Global Variables
 MainWindow *g_mainWindow;
@@ -27,23 +27,18 @@ ConfigurationFile g_settings(SETTINGS_FILENAME, false);
 
 void RunFindEDMWPathDialog()
 {
-	/*
 	auto callback = [](const Path &refPath)
 	{
 		return (refPath / Path(EMPIRES_EXENAME)).Exists();
 	};
 
-	Path path;
-	if(!CommonDialogs::SelectExistingDirectory("Select Empires installation directory", *g_mainWindow, callback, path))
+	Path path = g_mainWindow->SelectExistingDirectory(u8"Select Empires installation directory", callback);
+	if(path.GetString().IsEmpty())
 		throw false; //error
 
 	g_settings.SetValue(SETTINGS_SECTION_GENERAL, SETTINGS_KEY_EDMWPATH, path.GetString());
 	g_settings.SetValue(SETTINGS_SECTION_GENERAL, SETTINGS_KEY_SHOWUNKNOWNVALUES, false);
 	g_settings.SetValue(SETTINGS_SECTION_GENERAL, SETTINGS_KEY_SHOWCONSTANTVALUES, false);
-
-	 */
-
-	NOT_IMPLEMENTED_ERROR;
 }
 
 void Init()
@@ -64,7 +59,7 @@ void Init()
 	}
 }
 
-int32 Main(const String &refProgramName, const LinkedList<String> &refArgs)
+int32 Main(const String &programName, const FixedArray<String> &args)
 {
 	g_mainWindow = new MainWindow;
 	g_mainWindow->Show();

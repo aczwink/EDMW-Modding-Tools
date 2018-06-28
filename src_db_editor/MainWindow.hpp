@@ -17,7 +17,8 @@
  * along with EDMW-Modding-Tools.  If not, see <http://www.gnu.org/licenses/>.
  */
 //Local
-#include "ItemFieldsController.hpp"
+#include "ui/ItemFieldsController.hpp"
+#include "ui/ItemsController.hpp"
 
 class MainWindow : public MainAppWindow
 {
@@ -26,11 +27,6 @@ public:
 	MainWindow();
 
 	//Inline
-	inline uint32 GetActiveDBIndex() const
-	{
-		return this->activeDBIndex;
-	}
-
 	inline void SetCurrentItem(const ControllerIndex &index)
 	{
 		this->itemFieldsController.activeItemIndex = index;
@@ -38,11 +34,10 @@ public:
 	}
 
 private:
-	//Members
-	uint32 activeDBIndex;
-
 	//UI
-	TreeView *itemView;
+	ComboBox *filterMethodSelect;
+	TreeView *itemsView;
+	ItemsController itemsController;
 	ItemFieldsController itemFieldsController;
 
 	//Methods

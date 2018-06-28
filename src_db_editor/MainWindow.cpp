@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2017 Amir Czwink (amir130@hotmail.de)
+ * Copyright (c) 2017-2018 Amir Czwink (amir130@hotmail.de)
  *
  * This file is part of EDMW-Modding-Tools.
  *
@@ -18,14 +18,13 @@
  */
 //Class header
 #include "MainWindow.hpp"
-#include "DBManager.hpp"
+#include "db/DBManager.hpp"
+#include "ui/UIController.hpp"
 
 //Constructor
 MainWindow::MainWindow() : itemFieldsController(*this)
 {
-	this->activeDBIndex = Natural<uint32>::Max();
-
-	this->SetTitle("EDMW DB Editor");
+	this->SetTitle(u8"EDMW DB Editor");
 	this->SetupChildren();
 }
 
@@ -39,13 +38,13 @@ void MainWindow::SetupChildren()
 	GroupBox *groupBox = new GroupBox(this);
 	groupBox->sizingPolicy.horzScale = 5;
 
-	TableView *editTable = new TableView(groupBox);
+	//TableView *editTable = new TableView(groupBox);
+	TreeView *editTable = new TreeView(groupBox);
 	editTable->SetController(this->itemFieldsController);
 }
 
 void MainWindow::SetupSelectionPanel()
 {
-
 	GroupBox *groupBox = new GroupBox(this);
 	groupBox->SetLayout(new VerticalLayout);
 
@@ -75,7 +74,7 @@ void MainWindow::SetupSelectionPanel()
 
 		String GetText(uint32 index) const
 		{
-			return DBManager::Get().GetDatabases()[index]->GetName();
+			return DBManager::Get().GetDatabases()[index]->GetName().SubString(2);
 		}
 
 	private:
@@ -84,18 +83,58 @@ void MainWindow::SetupSelectionPanel()
 
 		void OnSelectionChanged() const
 		{
-			mainWindow->activeDBIndex = this->view->GetSelectionController().GetSelectedIndexes()[0].GetRow();
-			DBManager::Get().LoadDB(mainWindow->activeDBIndex);
-			mainWindow->itemView->SetController(DBManager::Get().GetDatabase(mainWindow->activeDBIndex)->GetItemController());
+			uint32 index = this->view->GetSelectionController().GetSelectedIndexes()[0].GetRow();
+			UIController::Get().SetActiveDBIndex(index);
+
+			mainWindow->filterMethodSelect->SetEnabled(true);
+			mainWindow->filterMethodSelect->GetController()->ModelChanged();
+			mainWindow->filterMethodSelect->Select(0);
 		}
 	} dbController(this);
 	dbFileSelect->SetController(dbController);
-	//dbFileSelect->SetHint("Select File");
+	dbFileSelect->SetHint(u8"Select File");
 
 	//filter method
-	ComboBox *filterMethodSelect = new ComboBox(subContainer);
-	filterMethodSelect->SetEnabled(false);
-	//filterMethodSelect->SetHint("Filter by");
+	static class FilterMethodController : public ListController
+	{
+	public:
+		//Constructor
+		inline FilterMethodController(MainWindow *mainWindow) : mainWindow(mainWindow)
+		{
+		}
+
+		//Event handlers
+		uint32 GetNumberOfItems() const
+		{
+			DB *db = UIController::Get().GetActiveDB();
+			if(db)
+				return db->GetFilterableFields().GetNumberOfElements();
+			return 0;
+		}
+
+		String GetText(uint32 index) const
+		{
+			DB *db = UIController::Get().GetActiveDB();
+
+			return db->GetFields()[db->GetFilterableFields()[index]].name;
+		}
+
+	private:
+		//Members
+		MainWindow *mainWindow;
+
+		//Event handlers
+		void OnSelectionChanged() const
+		{
+			uint32 index = this->view->GetSelectionController().GetSelectedIndexes()[0].GetRow();
+			UIController::Get().SetActiveFilterMethodIndex(index);
+			this->mainWindow->itemsView->GetController()->ModelChanged();
+		}
+	} filterMethodController(this);
+	this->filterMethodSelect = new ComboBox(subContainer);
+	this->filterMethodSelect->SetController(filterMethodController);
+	this->filterMethodSelect->SetEnabled(false);
+	this->filterMethodSelect->SetHint(u8"Filter method");
 
 	//save button
 	PushButton *saveButton = new PushButton(container);
@@ -106,7 +145,9 @@ void MainWindow::SetupSelectionPanel()
 	//second row
 	SearchBox *filterEdit = new SearchBox(groupBox);
 	filterEdit->SetEnabled(false);
+	filterEdit->SetHint(u8"Filter text");
 
 	//third row
-	this->itemView = new TreeView(groupBox);
+	this->itemsView = new TreeView(groupBox);
+	this->itemsView->SetController(this->itemsController);
 }

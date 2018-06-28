@@ -28,7 +28,7 @@ String DBField::ValueToString(const void *p) const
 		MemCopy(buffer, p, this->count);
 		buffer[100] = 0;
 
-		return UTF8String(buffer);
+		return buffer;
 	}
 
 	String result;
@@ -51,14 +51,14 @@ String DBField::ValueToString(const void *p) const
 			case DBType::ByteType:
 			{
 				uint64 v = ((byte *) p)[i];
-				result += ToHexString(v, 2, false);
+				result += String::HexNumber(v, 2, false);
 			}
 			break;
 			case DBType::Float32:
-				result += ToString(reader.ReadFloat32());
+				result += String::Number(reader.ReadFloat32());
 			break;
 			case DBType::UInt32:
-				result += ToString((uint64) reader.ReadUInt32());
+				result += String::Number(reader.ReadUInt32());
 				break;
 		}
 

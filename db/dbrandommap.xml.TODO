@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!--TODO: FIRST 4 bytes in the file (not per object) is a 10.... whatever that is -->
+<!--TODO: FIRST 4 bytes in the file (not per objects) is a 10.... whatever that is -->
 <Database>
 	<field type="uint32" name="Unknown integers" count="2" unknown="yes" />
 	<field type="char" name="Identifier" count="100" />

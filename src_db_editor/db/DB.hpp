@@ -20,12 +20,15 @@
 #include <ACStdLib.hpp>
 //Local
 #include "DBField.hpp"
-#include "definitions.hpp"
+#include "../definitions.hpp"
 //Namespaces
 using namespace ACStdLib;
 
 //Global variables
 extern ConfigurationFile g_settings;
+
+//Forward declarations
+class Object;
 
 class DB
 {
@@ -34,22 +37,31 @@ public:
 	DB(const String &name, const XML::Element &element);
 
 	//Destructor
-	virtual ~DB(){}
+	virtual ~DB();
 
 	//Abstract
-	virtual UI::TreeController &GetItemController() const = 0;
 	virtual const void *GetObjectPointer(const UI::ControllerIndex &index) const = 0;
 	virtual void Load() = 0;
 
 	//Inline
-	inline const FixedArray<DBField> &GetEntries() const
+	inline const FixedArray<DBField> &GetFields() const
 	{
-		return this->entries;
+		return this->fields;
+	}
+
+	inline const DynamicArray<uint32> &GetFilterableFields() const
+	{
+		return this->filterableFields;
 	}
 
 	inline const String &GetName() const
 	{
 		return this->name;
+	}
+
+	inline const DynamicArray<Object *> GetObjects() const
+	{
+		return this->objects;
 	}
 
 	inline bool IsLoaded() const
@@ -60,7 +72,14 @@ public:
 protected:
 	//Members
 	bool isLoaded;
-	FixedArray<DBField> entries;
+	FixedArray<DBField> fields;
+	DynamicArray<uint32> filterableFields;
+
+protected:
+	DynamicArray<Object *> objects;
+
+	//Methods
+	Object *LoadObject(InputStream &inputStream);
 
 	//Inline
 	inline uint32 GetObjectSize() const
@@ -70,7 +89,7 @@ protected:
 
 	inline Path GetPath() const
 	{
-		return Path(g_settings.GetStringValue(SETTINGS_SECTION_GENERAL, SETTINGS_KEY_EDMWPATH)) / Path("Data/db") / (this->name + ".dat");
+		return Path(g_settings.GetStringValue(SETTINGS_SECTION_GENERAL, SETTINGS_KEY_EDMWPATH)) / Path(u8"Data/db") / (this->name + u8".dat");
 	}
 
 private:

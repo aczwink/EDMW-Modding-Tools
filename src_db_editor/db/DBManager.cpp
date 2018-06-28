@@ -25,6 +25,9 @@
 //Constructor
 DBManager::DBManager()
 {
+	//TODO
+	this->AddDB(Path(u8"db/dbtechtree.xml"));
+	return;
 	for(const Path &path : Path("db"))
 	{
 		if(!path.IsDirectory() && path.GetFileExtension() == "xml")
@@ -53,7 +56,7 @@ void DBManager::AddDB(const Path &dbDefFilePath)
 	XML::Document *doc = XML::Document::Parse(inputStream);
 
 	const XML::Element &root = doc->GetRootElement();
-	ASSERT(root.GetName() == "Database");
+	ASSERT(root.GetName() == "Database", u8"The root element must be 'Database'");
 
 	if(root.HasAttribute("type"))
 	{

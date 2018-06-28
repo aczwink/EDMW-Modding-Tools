@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2017 Amir Czwink (amir130@hotmail.de)
+ * Copyright (c) 2018 Amir Czwink (amir130@hotmail.de)
  *
  * This file is part of EDMW-Modding-Tools.
  *
@@ -16,25 +16,36 @@
  * You should have received a copy of the GNU General Public License
  * along with EDMW-Modding-Tools.  If not, see <http://www.gnu.org/licenses/>.
  */
-//Local
-#include "StandardDB.hpp"
-//Namespaces
-using namespace ACStdLib::UI;
+#include "DB.hpp"
 
-class StandardDBController : public ListController
+struct FieldValue
+{
+	String string;
+};
+
+class Object
 {
 public:
 	//Constructor
-	inline StandardDBController(const StandardDB *db) : db(db){}
+	inline Object(DB &db) : db(db), values(db.GetFields().GetNumberOfElements())
+	{
+	}
 
-	//Methods
-	uint32 GetNumberOfItems() const;
-	String GetText(uint32 index) const;
+	//Inline
+	inline const FieldValue &GetValue(uint32 index) const
+	{
+		return this->values[index];
+	}
+
+	inline void SetValue(uint32 index, const String &value)
+	{
+		const DBField &field = this->db.GetFields()[index];
+		ASSERT(field.type == DBType::CharType, "If you see this, report this");
+		this->values[index].string = value;
+	}
 
 private:
 	//Members
-	const StandardDB *db;
-
-	//Methods
-	void OnSelectionChanged() const;
+	DB &db;
+	FixedArray<FieldValue> values;
 };

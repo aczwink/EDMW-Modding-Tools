@@ -18,11 +18,11 @@
  */
 #pragma once
 //Empires
-#define EMPIRES_EXENAME "Empires_DMW.exe"
+#define EMPIRES_EXENAME u8"Empires_DMW.exe"
 
 //Settings
-#define SETTINGS_FILENAME Path("settings.ini")
-#define SETTINGS_SECTION_GENERAL "General"
-#define SETTINGS_KEY_EDMWPATH "EDMWPath"
-#define SETTINGS_KEY_SHOWUNKNOWNVALUES "ShowUnknownValues"
-#define SETTINGS_KEY_SHOWCONSTANTVALUES "ShowConstantValues"
+#define SETTINGS_FILENAME Path(u8"settings.ini")
+#define SETTINGS_SECTION_GENERAL u8"General"
+#define SETTINGS_KEY_EDMWPATH u8"EDMWPath"
+#define SETTINGS_KEY_SHOWUNKNOWNVALUES u8"ShowUnknownValues"
+#define SETTINGS_KEY_SHOWCONSTANTVALUES u8"ShowConstantValues"

@@ -17,30 +17,21 @@
  * along with EDMW-Modding-Tools.  If not, see <http://www.gnu.org/licenses/>.
  */
 //Class header
-#include "StandardDBController.hpp"
-//Local
-#include "MainWindow.hpp"
+#include "UnknownCountDB.hpp"
 
 //Public methods
-uint32 StandardDBController::GetNumberOfItems() const
+void UnknownCountDB::Load()
 {
-	return this->db->nObjects;
-}
+	FileInputStream file(this->GetPath());
+	DataReader reader(false, file);
 
-String StandardDBController::GetText(uint32 index) const
-{
-	return "TODO: implement me";
-}
-
-//Private methods
-void StandardDBController::OnSelectionChanged() const
-{
-	if(!this->view->GetSelectionController().GetSelectedIndexes().IsEmpty())
+	uint32 nObjects = static_cast<uint32>(file.GetSize() / this->GetObjectSize());
+	for(uint32 i = 0; i < nObjects; i++)
 	{
-		uint32 selectedRow = this->view->GetSelectionController().GetSelectedIndexes()[0].GetRow();
-
-		extern MainWindow *g_mainWindow;
-
-		g_mainWindow->SetCurrentItem(this->CreateIndex(selectedRow, 0, nullptr));
+		Object *row = this->LoadObject(file);
+		this->objects.Push(row);
 	}
+
+	ASSERT(file.GetRemainingBytes() == 0, u8"If you see this, please report");
+	this->isLoaded = true;
 }

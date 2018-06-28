@@ -19,9 +19,11 @@
 //Class header
 #include "ItemFieldsController.hpp"
 //Local
-#include "DB.hpp"
-#include "DBManager.hpp"
-#include "MainWindow.hpp"
+#include "../db/DB.hpp"
+#include "../db/DBManager.hpp"
+#include "../MainWindow.hpp"
+#include "../db/Object.hpp"
+#include "UIController.hpp"
 
 //Constructor
 ItemFieldsController::ItemFieldsController(const MainWindow &mainWindow) : mainWindow(mainWindow)
@@ -30,27 +32,45 @@ ItemFieldsController::ItemFieldsController(const MainWindow &mainWindow) : mainW
 }
 
 //Public methods
+ControllerIndex ItemFieldsController::GetChildIndex(uint32 row, uint32 column, const ControllerIndex &parent) const
+{
+	return this->CreateIndex(row, column, nullptr);
+}
+
 String ItemFieldsController::GetColumnText(uint32 column) const
 {
-	static const char *columns[] = {"Field name", "Value", "Associated value", "Comment"};
+	static const char *columns[] = {u8"Field name", u8"Value", u8"Associated value", u8"Comment"};
 
 	return columns[column];
 }
 
-uint32 ItemFieldsController::GetNumberOfRows() const
+uint32 ItemFieldsController::GetNumberOfColumns() const
 {
-	DB *db = this->GetActiveDB();
-
-	if(db)
-		return db->GetEntries().GetNumberOfElements();
-	return 0;
+	return 4;
 }
 
-String ItemFieldsController::GetText(uint32 row, uint32 column) const
+uint32 ItemFieldsController::GetNumberOfChildren(const ControllerIndex &parent) const
 {
-	DB *db = DBManager::Get().GetDatabase(this->mainWindow.GetActiveDBIndex());
-	DBManager::Get().LoadDB(this->mainWindow.GetActiveDBIndex()); //TODO
-	const FixedArray<DBField> &entries = db->GetEntries();
+	DB *db = UIController::Get().GetActiveDB();
+
+	if(parent.HasParent())
+		return 0;
+
+	if(db)
+		return db->GetFields().GetNumberOfElements();
+}
+
+ControllerIndex ItemFieldsController::GetParentIndex(const ControllerIndex &index) const
+{
+	return ControllerIndex();
+}
+
+String ItemFieldsController::GetText(const ControllerIndex &index) const
+{
+	return u8"TODO";
+	/*
+	DB *db = UIController::Get().GetActiveDB();
+	const FixedArray<DBField> &entries = db->GetFields();
 	const DBField &entry = entries[row];
 	const void *objectPtr = db->GetObjectPointer(this->activeItemIndex);
 	const void *fieldPtr = ((byte *)objectPtr) + entry.offset;
@@ -68,13 +88,5 @@ String ItemFieldsController::GetText(uint32 row, uint32 column) const
 	}
 
 	return String();
-}
-
-//Private methods
-DB *ItemFieldsController::GetActiveDB() const
-{
-	if(this->mainWindow.GetActiveDBIndex() == Natural<uint32>::Max())
-		return nullptr;
-
-	return DBManager::Get().GetDatabase(this->mainWindow.GetActiveDBIndex());
+	 */
 }
