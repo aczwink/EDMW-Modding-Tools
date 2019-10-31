@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2017 Amir Czwink (amir130@hotmail.de)
+ * Copyright (c) 2017-2018 Amir Czwink (amir130@hotmail.de)
  *
  * This file is part of EDMW-Modding-Tools.
  *
@@ -17,10 +17,10 @@
  * along with EDMW-Modding-Tools.  If not, see <http://www.gnu.org/licenses/>.
  */
 #pragma once
-#include <ACStdLib.hpp>
+#include <Std++.hpp>
 //Local
 #include "DB.hpp"
-using namespace ACStdLib;
+using namespace StdXX;
 
 class DBManager
 {

@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2017 Amir Czwink (amir130@hotmail.de)
+ * Copyright (c) 2017-2019 Amir Czwink (amir130@hotmail.de)
  *
  * This file is part of EDMW-Modding-Tools.
  *
@@ -17,41 +17,38 @@
  * along with EDMW-Modding-Tools.  If not, see <http://www.gnu.org/licenses/>.
  */
 #pragma once
-#include <ACStdLib.hpp>
+#include <Std++.hpp>
 //Local
 #include "DBField.hpp"
 #include "../definitions.hpp"
+#include "Object.hpp"
 //Namespaces
-using namespace ACStdLib;
+using namespace StdXX;
 
 //Global variables
 extern ConfigurationFile g_settings;
-
-//Forward declarations
-class Object;
 
 class DB
 {
 public:
 	//Constructor
-	DB(const String &name, const XML::Element &element);
-
-	//Destructor
-	virtual ~DB();
-
-	//Abstract
-	virtual const void *GetObjectPointer(const UI::ControllerIndex &index) const = 0;
-	virtual void Load() = 0;
-
-	//Inline
-	inline const FixedArray<DBField> &GetFields() const
+	inline DB(const String &name, const XML::Element& dbElement) : repeating(false), isLoaded(false), name(name), objectScheme(nullptr)
 	{
-		return this->fields;
+		this->ParseXML(dbElement);
 	}
 
+	//Methods
+	void Load();
+
+	//Inline
 	inline const DynamicArray<uint32> &GetFilterableFields() const
 	{
 		return this->filterableFields;
+	}
+
+	inline const DynamicArray<const DBField*>& GetFlattenedFields() const
+	{
+		return this->flattenedFields;
 	}
 
 	inline const String &GetName() const
@@ -59,9 +56,19 @@ public:
 		return this->name;
 	}
 
-	inline const DynamicArray<Object *> GetObjects() const
+	inline uint32 GetNumberOfObjects() const
 	{
-		return this->objects;
+		return this->root.GetNumberOfChildren();
+	}
+
+	inline const Object& GetObject(uint32 index) const
+	{
+		return this->root.GetChild(index);
+	}
+
+	inline const DynamicArray<DBField>& GetObjectScheme() const
+	{
+		return *this->objectScheme;
 	}
 
 	inline bool IsLoaded() const
@@ -69,31 +76,30 @@ public:
 		return this->isLoaded;
 	}
 
-protected:
-	//Members
-	bool isLoaded;
-	FixedArray<DBField> fields;
-	DynamicArray<uint32> filterableFields;
+	//Functions
+	static String LoadLanguageString(uint32 resourceId, uint8 langDllNumber);
 
-protected:
-	DynamicArray<Object *> objects;
+private:
+	//Members
+	bool repeating;
+	bool isLoaded;
+	String name;
+	DynamicArray<DBField> fields;
+	Map<String, DynamicArray<DBField>> types;
+	DynamicArray<uint32> filterableFields;
+	DynamicArray<DBField>* objectScheme;
+	DynamicArray<const DBField*> flattenedFields;
+	Object root;
 
 	//Methods
-	Object *LoadObject(InputStream &inputStream);
+	DynamicArray<const DBField*> FlattenFields(const DynamicArray<DBField>& fields) const;
+	void LoadFields(Object& object, const DynamicArray<DBField>& fields, Map<String, uint32>& virtuals, DataReader& reader, TextReader& textReader);
+	DynamicArray<DBField> ParseFields(const XML::Element& element);
+	void ParseXML(const XML::Element& dbElement);
 
 	//Inline
-	inline uint32 GetObjectSize() const
-	{
-		return this->objectSize;
-	}
-
 	inline Path GetPath() const
 	{
 		return Path(g_settings.GetStringValue(SETTINGS_SECTION_GENERAL, SETTINGS_KEY_EDMWPATH)) / Path(u8"Data/db") / (this->name + u8".dat");
 	}
-
-private:
-	//Members
-	String name;
-	uint32 objectSize;
 };

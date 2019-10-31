@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2017 Amir Czwink (amir130@hotmail.de)
+ * Copyright (c) 2017-2018 Amir Czwink (amir130@hotmail.de)
  *
  * This file is part of EDMW-Modding-Tools.
  *
@@ -16,22 +16,26 @@
  * You should have received a copy of the GNU General Public License
  * along with EDMW-Modding-Tools.  If not, see <http://www.gnu.org/licenses/>.
  */
-//Class header
+ //Class header
 #include "DBManager.hpp"
-//Local
-#include "StandardDB.hpp"
-#include "UnknownCountDB.hpp"
 
 //Constructor
 DBManager::DBManager()
 {
 	//TODO
-	this->AddDB(Path(u8"db/dbtechtree.xml"));
+	this->AddDB(OSFileSystem::GetInstance().GetWorkingDirectory() / Path(u8"db/dbobjects.xml"));
+	//this->AddDB(OSFileSystem::GetInstance().GetWorkingDirectory() / Path(u8"db/dbtechtree.xml"));
 	return;
-	for(const Path &path : Path("db"))
+
+	Path dirPath = Path(u8"db");
+	auto dir = OSFileSystem::GetInstance().GetDirectory(dirPath);
+	for (auto& node : *dir)
 	{
-		if(!path.IsDirectory() && path.GetFileExtension() == "xml")
-			this->AddDB(Path("db") / path);
+		if (node.Get<1>().IsInstanceOf<Directory>())
+			continue;
+		Path fileName = node.Get<0>();
+		if(fileName.GetFileExtension() == u8"xml")
+			this->AddDB(dirPath / fileName);
 	}
 }
 
@@ -44,7 +48,7 @@ DBManager::~DBManager()
 //Public methods
 void DBManager::ReleaseAll()
 {
-	for(const DB *const& db : this->databases)
+	for (const DB *const& db : this->databases)
 		delete db;
 	this->databases.Release();
 }
@@ -56,23 +60,7 @@ void DBManager::AddDB(const Path &dbDefFilePath)
 	XML::Document *doc = XML::Document::Parse(inputStream);
 
 	const XML::Element &root = doc->GetRootElement();
-	ASSERT(root.GetName() == "Database", u8"The root element must be 'Database'");
-
-	if(root.HasAttribute("type"))
-	{
-		if(root.GetAttribute("type") == "List_UnknownCount")
-		{
-			this->databases.Push(new UnknownCountDB(dbDefFilePath.GetTitle(), root));
-		}
-		else
-		{
-			NOT_IMPLEMENTED_ERROR;
-		}
-	}
-	else
-	{
-		this->databases.Push(new StandardDB(dbDefFilePath.GetTitle(), root));
-	}
-
+	ASSERT(root.GetName() == u8"Database", u8"The root element must be 'Database'");
+	this->databases.Push(new DB(dbDefFilePath.GetTitle(), root));
 	delete doc;
 }

@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2017 Amir Czwink (amir130@hotmail.de)
+ * Copyright (c) 2017-2019 Amir Czwink (amir130@hotmail.de)
  *
  * This file is part of EDMW-Modding-Tools.
  *
@@ -17,16 +17,21 @@
  * along with EDMW-Modding-Tools.  If not, see <http://www.gnu.org/licenses/>.
  */
 //Local
-#include "StandardDB.hpp"
+#include "ObjectEditorController.hpp"
 
-class UnknownCountDB : public StandardDB
+class MainWindow : public MainAppWindow
 {
 public:
 	//Constructor
-	inline UnknownCountDB(const String &name, const XML::Element &element) : StandardDB(name, element)
-	{
-	}
+	MainWindow(EventQueue& eventQueue);
+
+private:
+	//Members
+	SelectBox* filterMethodSelect;
+	SearchBox* filterBox;
+	TreeView* objectNavigatorView;
 
 	//Methods
-	void Load();
+	void SetupChildren();
+	void SetupSelectionPanel();
 };

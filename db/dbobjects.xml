@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Database>
+  <Define type="Object">
+    <Field type="char" name="Identifier" count="100" filterable="yes" />
+    <Field type="uint32" name="Unknown (Id?)" comment="(Unique except 0)" />
+    <Field type="uint32" name="Family Id" />
+    <Field type="uint32" name="Unknown" count="2" />
+    <Field type="uint32" name="Id" />
+    <Field type="uint32" name="Lifepoints" />
+    <Field type="uint32" name="Unknown" comment="1 for some ships... 0 otherwise" />
+    <Field type="float32" name="Minimum attack range" />
+    <Field type="float32" name="Maximum attack range" />
+    <Field type="float32" name="Line of sight" />
+    <Field type="float32" name="Reload time" />
+    <Field type="float32" name="Detonation radius" />
+    <Field type="float32" name="Velocity" />
+    <Field type="float32" name="Acceleration" comment="acceleration = deceleration" />
+    <Field type="float32" name="Unknown" count="2" comment="has something to do with turning speed" />
+    <Field type="float32" name="Turret turn speed" />
+    <Field type="float32" name="Unknown" />
+    <Field type="uint32" name="Unknown" comment="1 for airplanes, else 0" />
+    <Field type="uint32" name="Fuel Capacity" comment="In Action Mode +50%" />
+    <Field type="float32" name="Unknown" comment="seems to be 1 for some ships, else 0" />
+    <Field type="float32" name="Unknown" comment="the bigger the value, the less the unit needs to turn to attack" />
+    <Field type="uint32" name="Unknown" />
+    <Field type="uint32" name="Weapon to hit id" />
+    <Field type="uint32" name="Damage" />
+    <Field type="uint32" name="Armor against shock" />
+    <Field type="uint32" name="Armor against arrows" />
+    <Field type="uint32" name="Armor against pierce" />
+    <Field type="uint32" name="Armor against guns" />
+    <Field type="uint32" name="Unknown" count="2" />
+    <Field type="uint32" name="Projectile object Id" />
+    <Field type="uint32" name="Target Mode" comment="Some kind of pattern on what can be targeted" />
+    <Field type="uint32" name="Unknown" comment="mostly 1, zero for stone and gold mines; cavalier and leo 451 have special values... could be booleans..." />
+    <Field type="float32" name="Model scale factor" />
+    <Field type="char" name="Type" count="32" />
+    <Field type="uint32" name="Unknown" count="5" comment="mostly 0, could be a bitmask..." />
+    <Field type="uint32" name="Unknown" comment="some kind of type of object? 0 = ambient stuff, 1 = resources stuff, 2 = buildings, 3 = aircraft, 4 = ship, 5 = ground unit, 6 = citizens, repair workers... there are some others also" />
+    <Field type="uint32" name="String Table Id" language="2" />
+    <Field type="uint32" name="Button Id" />
+    <Field type="uint32" name="Graphics Id" />
+    <Field type="float32" name="Building rate" comment="could be close to ms?! However time between amount is built" />
+    <Field type="float32" name="Unknown" comment="for sure also a rate... iron from empire earth?" />
+    <Field type="float32" name="Field food gather rate" comment="" />
+    <Field type="float32" name="Gold gather rate" comment="could be close to ms?! However time until 1 gold unit is picked" />
+    <Field type="float32" name="Stone gather rate" comment="could be close to ms?! However time until 1 stone unit is picked" />
+    <Field type="float32" name="Wood gather rate" comment="" />
+    <Field type="float32" name="Animal food gather rate" comment="also fish" />
+    <Field type="float32" name="Tree food gather rate" comment="" />
+    <Field type="uint32" name="Constant FF FF FF FF" constant="4294967295" count="6" />
+    <Field type="uint32" name="Unknown" comment="2 for citizens, 0 otherwise" />
+    <!--TODO: CONTINUE HERE-->
+  </Define>
+  
+  <Structure>
+    <Field type="uint32" virtual="#objects" />
+    <Object></Object>
+  </Structure>
+</Database>

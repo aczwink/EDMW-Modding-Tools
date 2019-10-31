@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2017 Amir Czwink (amir130@hotmail.de)
+ * Copyright (c) 2018-2019 Amir Czwink (amir130@hotmail.de)
  *
  * This file is part of EDMW-Modding-Tools.
  *
@@ -16,31 +16,21 @@
  * You should have received a copy of the GNU General Public License
  * along with EDMW-Modding-Tools.  If not, see <http://www.gnu.org/licenses/>.
  */
-//Local
-#include "ui/ItemFieldsController.hpp"
-#include "ui/ItemsController.hpp"
+//Class header
+#include "Object.hpp"
 
-class MainWindow : public MainAppWindow
+//Destructor
+Object::~Object()
 {
-public:
-	//Constructor
-	MainWindow();
-
-	//Inline
-	inline void SetCurrentItem(const ControllerIndex &index)
+	for (ObjectProperty& prop : this->properties)
 	{
-		this->itemFieldsController.activeItemIndex = index;
-		this->itemFieldsController.ModelChanged();
+		switch (prop.type)
+		{
+		case DBType::CharType:
+			delete prop.string;
+			break;
+		}
 	}
-
-private:
-	//UI
-	ComboBox *filterMethodSelect;
-	TreeView *itemsView;
-	ItemsController itemsController;
-	ItemFieldsController itemFieldsController;
-
-	//Methods
-	void SetupChildren();
-	void SetupSelectionPanel();
-};
+	for (Object*& child : this->children)
+		delete child;
+}

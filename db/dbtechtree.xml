@@ -1,4 +1,49 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <Database>
-	<field type="char" name="Identifier" count="100" filterable="yes" />
+  <Define type="Tech">
+    <Field type="char" name="Identifier" count="100" filterable="yes" />
+    <Field type="uint32" name="Unknown (Unique)" />
+    <Field type="uint32" name="Tech ID" />
+    <Field type="uint32" name="Start Epoch Id" />
+    <Field type="uint32" name="End Epoch Id" />
+    <Field type="uint32" name="Unknown" count="2" />
+    <Field type="uint32" name="Wood cost" />
+    <Field type="uint32" name="Stone cost" />
+    <Field type="uint32" name="Gold cost" />
+    <Field type="uint32" name="Unknown" comment="Might be a leftover from Empire Earth: Iron cost?! Not used in the game." />
+    <Field type="uint32" name="Food cost" />
+    <Field type="uint32" name="Build Speed" comment="Ingame build speed = (this value) x Coef.; Coef is: 1 Slow, ? Normal, ? Fast, 0.4 Very Fast ingame speed" />
+    <Field type="uint32" name="Unknown" count="5" />
+    <Field type="uint32" name="Button Id" />
+    <Field type="uint32" name="Unknown" />
+    <Field type="uint32" name="String Id" language="2" />
+    <Field type="uint32" name="Unknown" count="6" />
+    <Field type="uint32" name="Phoenix-civilization-table Id" />
+    <Field type="uint32" name="Unknown" />
+    <Field type="uint32" name="Amount" comment="How many techs you get when purchasing this" />
+    <Field type="uint32" name="Unknown" count="4" />
+    <Field type="uint32" name="Prerequisite String Id 1" language="1" />
+    <Field type="uint32" name="Prerequisite String Id 2" language="1" />
+    <Field type="uint32" name="Tooltip String Id" language="1" />
+    <Field type="float32" name="Unknown" count="4" />
+    <Field type="bool" name="Unknown" />
+    <Field type="bool" name="Editor-only" comment="false means that unit is buildable" />
+    <Field type="bool" name="Unknown" count="2" />
+    <Field type="uint32" name="Unknown" count="40" />
+    <Field type="uint32" name="Unknown" comment="there seems to be a link between this value and unknown long 4 in dbobjects" />
+    <Field type="uint32" name="Unknown" count="2" />
+    <Field type="uint32" virtual="#unknownListLen1" />
+    <Field type="uint32" name="Unknown Additionals 1" count="#unknownListLen1" comment="could be a building id? (i.e. dbobjects)" />
+    <Field type="uint32" virtual="#unknownListLen2" />
+    <Field type="uint32" name="Unknown Additionals 2" count="#unknownListLen2" comment="when is unknown additionals 2 needed?" />
+  </Define>
+
+  <Structure repeating="true">
+    <Field type="uint32" virtual="#techs" />
+    <!-- The epoch tech -->
+    <Tech>
+      <!-- The techs for the epoch -->
+      <Tech count="#techs"></Tech>
+    </Tech>
+  </Structure>
 </Database>

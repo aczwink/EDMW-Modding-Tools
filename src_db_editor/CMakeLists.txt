@@ -8,23 +8,20 @@ set(SOURCE_FILES_DBEDITOR
 	${CMAKE_CURRENT_SOURCE_DIR}/db/DBField.hpp
 	${CMAKE_CURRENT_SOURCE_DIR}/db/DBManager.cpp
 	${CMAKE_CURRENT_SOURCE_DIR}/db/DBManager.hpp
+	${CMAKE_CURRENT_SOURCE_DIR}/db/Object.cpp
 	${CMAKE_CURRENT_SOURCE_DIR}/db/Object.hpp
-	${CMAKE_CURRENT_SOURCE_DIR}/db/StandardDB.cpp
-	${CMAKE_CURRENT_SOURCE_DIR}/db/StandardDB.hpp
-	${CMAKE_CURRENT_SOURCE_DIR}/db/UnknownCountDB.cpp
-	${CMAKE_CURRENT_SOURCE_DIR}/db/UnknownCountDB.hpp
 
 	#ui
-	${CMAKE_CURRENT_SOURCE_DIR}/ui/ItemFieldsController.cpp
-	${CMAKE_CURRENT_SOURCE_DIR}/ui/ItemFieldsController.hpp
-	${CMAKE_CURRENT_SOURCE_DIR}/ui/ItemsController.cpp
-	${CMAKE_CURRENT_SOURCE_DIR}/ui/ItemsController.hpp
+	${CMAKE_CURRENT_SOURCE_DIR}/ui/MainWindow.cpp
+	${CMAKE_CURRENT_SOURCE_DIR}/ui/MainWindow.hpp
+	${CMAKE_CURRENT_SOURCE_DIR}/ui/ObjectEditorController.cpp
+	${CMAKE_CURRENT_SOURCE_DIR}/ui/ObjectEditorController.hpp
+	${CMAKE_CURRENT_SOURCE_DIR}/ui/ObjectNavigatorController.cpp
+	${CMAKE_CURRENT_SOURCE_DIR}/ui/ObjectNavigatorController.hpp
 	${CMAKE_CURRENT_SOURCE_DIR}/ui/UIController.hpp
 
 	#.
 	${CMAKE_CURRENT_SOURCE_DIR}/definitions.hpp
 	${CMAKE_CURRENT_SOURCE_DIR}/main.cpp
-	${CMAKE_CURRENT_SOURCE_DIR}/MainWindow.cpp
-	${CMAKE_CURRENT_SOURCE_DIR}/MainWindow.hpp
 
 	PARENT_SCOPE)

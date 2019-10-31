@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2017 Amir Czwink (amir130@hotmail.de)
+ * Copyright (c) 2017-2018 Amir Czwink (amir130@hotmail.de)
  *
  * This file is part of EDMW-Modding-Tools.
  *
@@ -16,14 +16,32 @@
  * You should have received a copy of the GNU General Public License
  * along with EDMW-Modding-Tools.  If not, see <http://www.gnu.org/licenses/>.
  */
+#include <Std++.hpp>
+using namespace StdXX;
 //Local
-#include "MainWindow.hpp"
-#include "definitions.hpp"
 #include "db/DBManager.hpp"
+#include "ui/MainWindow.hpp"
 
 //Global Variables
-MainWindow *g_mainWindow;
 ConfigurationFile g_settings(SETTINGS_FILENAME, false);
+
+int32 Main(const String &programName, const FixedArray<String> &args)
+{
+	StandardEventQueue eventQueue;
+	MainWindow* mainWindow = new MainWindow(eventQueue);
+	mainWindow->Show();
+
+	eventQueue.ProcessEvents();
+	DBManager::Get().ReleaseAll();
+
+	return EXIT_SUCCESS;
+}
+
+/*
+//Local
+#include "definitions.hpp"
+
+MainWindow *g_mainWindow;
 
 void RunFindEDMWPathDialog()
 {
@@ -61,10 +79,7 @@ void Init()
 
 int32 Main(const String &programName, const FixedArray<String> &args)
 {
-	g_mainWindow = new MainWindow;
-	g_mainWindow->Show();
-
-	try
+try
 	{
 		Init();
 	}
@@ -73,11 +88,4 @@ int32 Main(const String &programName, const FixedArray<String> &args)
 		delete g_mainWindow;
 		return EXIT_FAILURE;
 	}
-
-	EventQueue &eventQueue = EventQueue::GetGlobalQueue();
-	eventQueue.ProcessEvents();
-
-	DBManager::Get().ReleaseAll();
-
-	return EXIT_SUCCESS;
-}
+}*/

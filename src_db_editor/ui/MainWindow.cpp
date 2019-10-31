@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2017-2018 Amir Czwink (amir130@hotmail.de)
+ * Copyright (c) 2017-2019 Amir Czwink (amir130@hotmail.de)
  *
  * This file is part of EDMW-Modding-Tools.
  *
@@ -16,13 +16,15 @@
  * You should have received a copy of the GNU General Public License
  * along with EDMW-Modding-Tools.  If not, see <http://www.gnu.org/licenses/>.
  */
-//Class header
+ //Class header
 #include "MainWindow.hpp"
-#include "db/DBManager.hpp"
-#include "ui/UIController.hpp"
+//Local
+#include "../db/DBManager.hpp"
+#include "ObjectNavigatorController.hpp"
+#include "UIController.hpp"
 
 //Constructor
-MainWindow::MainWindow() : itemFieldsController(*this)
+MainWindow::MainWindow(EventQueue& eventQueue) : MainAppWindow(eventQueue)
 {
 	this->SetTitle(u8"EDMW DB Editor");
 	this->SetupChildren();
@@ -31,34 +33,38 @@ MainWindow::MainWindow() : itemFieldsController(*this)
 //Private methods
 void MainWindow::SetupChildren()
 {
-	this->SetLayout(new HorizontalLayout);
+	this->GetContentContainer()->SetLayout(new HorizontalLayout);
 	this->SetupSelectionPanel();
-
+	
 	//right panel
-	GroupBox *groupBox = new GroupBox(this);
+	GroupBox *groupBox = new GroupBox();
 	groupBox->sizingPolicy.horzScale = 5;
+	this->AddContentChild(groupBox);
 
-	//TableView *editTable = new TableView(groupBox);
-	TreeView *editTable = new TreeView(groupBox);
-	editTable->SetController(this->itemFieldsController);
+	TableView *objectEditorView = new TableView();
+	//TreeView *objectEditorView = new TreeView();
+	objectEditorView->SetController(new ObjectEditorController(*this));
+	groupBox->AddContentChild(objectEditorView);
 }
 
 void MainWindow::SetupSelectionPanel()
 {
-	GroupBox *groupBox = new GroupBox(this);
-	groupBox->SetLayout(new VerticalLayout);
+	GroupBox *groupBox = new GroupBox();
+	groupBox->GetContentContainer()->SetLayout(new VerticalLayout);
+	this->AddContentChild(groupBox);
 
 	//first row
-	WidgetContainer *container = new WidgetContainer(groupBox);
+	CompositeWidget *container = new CompositeWidget();
 	container->SetLayout(new HorizontalLayout);
+	groupBox->AddContentChild(container);
 
 	//sub container
-	WidgetContainer *subContainer = new WidgetContainer(container);
+	CompositeWidget *subContainer = new CompositeWidget();
 	subContainer->sizingPolicy.horzScale = 2;
 	subContainer->SetLayout(new VerticalLayout);
+	container->AddChild(subContainer);
 
 	//db file selections
-	ComboBox *dbFileSelect = new ComboBox(subContainer);
 	static class DBController : public ListController
 	{
 	public:
@@ -85,14 +91,17 @@ void MainWindow::SetupSelectionPanel()
 		{
 			uint32 index = this->view->GetSelectionController().GetSelectedIndexes()[0].GetRow();
 			UIController::Get().SetActiveDBIndex(index);
-
+			
 			mainWindow->filterMethodSelect->SetEnabled(true);
 			mainWindow->filterMethodSelect->GetController()->ModelChanged();
-			mainWindow->filterMethodSelect->Select(0);
+			mainWindow->filterMethodSelect->Select(mainWindow->filterMethodSelect->GetController()->GetChildIndex(0, 0));
 		}
-	} dbController(this);
-	dbFileSelect->SetController(dbController);
+	};
+
+	SelectBox *dbFileSelect = new SelectBox();
+	dbFileSelect->SetController(new DBController(this));
 	dbFileSelect->SetHint(u8"Select File");
+	subContainer->AddChild(dbFileSelect);
 
 	//filter method
 	static class FilterMethodController : public ListController
@@ -107,7 +116,7 @@ void MainWindow::SetupSelectionPanel()
 		uint32 GetNumberOfItems() const
 		{
 			DB *db = UIController::Get().GetActiveDB();
-			if(db)
+			if (db)
 				return db->GetFilterableFields().GetNumberOfElements();
 			return 0;
 		}
@@ -116,7 +125,7 @@ void MainWindow::SetupSelectionPanel()
 		{
 			DB *db = UIController::Get().GetActiveDB();
 
-			return db->GetFields()[db->GetFilterableFields()[index]].name;
+			return db->GetObjectScheme()[db->GetFilterableFields()[index]].name;
 		}
 
 	private:
@@ -128,26 +137,31 @@ void MainWindow::SetupSelectionPanel()
 		{
 			uint32 index = this->view->GetSelectionController().GetSelectedIndexes()[0].GetRow();
 			UIController::Get().SetActiveFilterMethodIndex(index);
-			this->mainWindow->itemsView->GetController()->ModelChanged();
+			this->mainWindow->objectNavigatorView->GetController()->ModelChanged();
+			this->mainWindow->filterBox->SetEnabled(true);
 		}
-	} filterMethodController(this);
-	this->filterMethodSelect = new ComboBox(subContainer);
-	this->filterMethodSelect->SetController(filterMethodController);
+	};
+	this->filterMethodSelect = new SelectBox();
+	this->filterMethodSelect->SetController(new FilterMethodController(this));
 	this->filterMethodSelect->SetEnabled(false);
 	this->filterMethodSelect->SetHint(u8"Filter method");
+	subContainer->AddChild(this->filterMethodSelect);
 
 	//save button
-	PushButton *saveButton = new PushButton(container);
+	PushButton *saveButton = new PushButton();
 	saveButton->sizingPolicy.SetVerticalPolicy(SizingPolicy::Policy::Preferred);
 	saveButton->SetEnabled(false);
 	saveButton->SetText("Save");
+	container->AddChild(saveButton);
 
 	//second row
-	SearchBox *filterEdit = new SearchBox(groupBox);
-	filterEdit->SetEnabled(false);
-	filterEdit->SetHint(u8"Filter text");
+	this->filterBox = new SearchBox();
+	this->filterBox->SetEnabled(false);
+	this->filterBox->SetHint(u8"Filter text");
+	groupBox->AddContentChild(this->filterBox);
 
 	//third row
-	this->itemsView = new TreeView(groupBox);
-	this->itemsView->SetController(this->itemsController);
+	this->objectNavigatorView = new TreeView();
+	this->objectNavigatorView->SetController(new ObjectNavigatorController);
+	groupBox->AddContentChild(this->objectNavigatorView);
 }

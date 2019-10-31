@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2017 Amir Czwink (amir130@hotmail.de)
+ * Copyright (c) 2017-2018 Amir Czwink (amir130@hotmail.de)
  *
  * This file is part of EDMW-Modding-Tools.
  *
@@ -17,9 +17,9 @@
  * along with EDMW-Modding-Tools.  If not, see <http://www.gnu.org/licenses/>.
  */
 #pragma once
-#include <ACStdLib.hpp>
+#include <Std++.hpp>
 //Namespaces
-using namespace ACStdLib;
+using namespace StdXX;
 
 enum class DBType
 {
@@ -27,6 +27,8 @@ enum class DBType
 	Bool,
 	ByteType,
 	Float32,
+	NamedType,
+	Object,
 	UInt32
 };
 
@@ -35,21 +37,10 @@ class DBField
 public:
 	//Members
 	DBType type;
-	uint32 count;
+	String count;
 	String name;
+	String virt;
+	Optional<uint8> language;
 	String comment;
-	uint32 offset;
-
-	//Methods
-	String ValueToString(const void *p) const;
-
-	//Inline
-	inline uint32 GetSize() const
-	{
-		return this->GetTypeSize() * this->count;
-	}
-
-private:
-	//Methods
-	uint32 GetTypeSize() const;
+	DynamicArray<DBField> childrenFields;
 };

@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2017 Amir Czwink (amir130@hotmail.de)
+ * Copyright (c) 2017-2019 Amir Czwink (amir130@hotmail.de)
  *
  * This file is part of EDMW-Modding-Tools.
  *
@@ -19,6 +19,8 @@
 #pragma once
 //Empires
 #define EMPIRES_EXENAME u8"Empires_DMW.exe"
+#define EMPIRES_LANGDLL u8"Language.dll"
+#define EMPIRES_LANG2DLL u8"Language2.dll"
 
 //Settings
 #define SETTINGS_FILENAME Path(u8"settings.ini")

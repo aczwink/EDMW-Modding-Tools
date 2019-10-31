@@ -16,6 +16,7 @@
  * You should have received a copy of the GNU General Public License
  * along with EDMW-Modding-Tools.  If not, see <http://www.gnu.org/licenses/>.
  */
+/*
 //Class header
 #include "DBField.hpp"
 
@@ -81,4 +82,4 @@ uint32 DBField::GetTypeSize() const
 		case DBType::UInt32:
 			return 4;
 	}
-}
+}*/

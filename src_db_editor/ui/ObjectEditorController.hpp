@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2017 Amir Czwink (amir130@hotmail.de)
+ * Copyright (c) 2017-2019 Amir Czwink (amir130@hotmail.de)
  *
  * This file is part of EDMW-Modding-Tools.
  *
@@ -17,24 +17,24 @@
  * along with EDMW-Modding-Tools.  If not, see <http://www.gnu.org/licenses/>.
  */
 #pragma once
-#include <ACStdLib.hpp>
+#include <Std++.hpp>
 //Local
 #include "../db/DB.hpp"
 //Namespaces
-using namespace ACStdLib;
-using namespace ACStdLib::UI;
+using namespace StdXX;
+using namespace StdXX::UI;
 
 //Forward declarations
 class MainWindow;
 
-class ItemFieldsController : public TreeController
+class ObjectEditorController : public TreeController
 {
 public:
 	//Members
 	ControllerIndex activeItemIndex;
 
 	//Constructor
-	ItemFieldsController(const MainWindow &mainWindow);
+	ObjectEditorController(const MainWindow &mainWindow);
 
 	//Methods
 	ControllerIndex GetChildIndex(uint32 row, uint32 column, const ControllerIndex &parent) const override;

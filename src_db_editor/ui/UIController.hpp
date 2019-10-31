@@ -29,9 +29,19 @@ public:
 		return DBManager::Get().GetDatabase(this->activeDBIndex);
 	}
 
+	inline Object* GetActiveObject()
+	{
+		return this->activeObject;
+	}
+	
 	inline uint32 GetActiveFilterFieldIndex()
 	{
 		return this->GetActiveDB()->GetFilterableFields()[this->filterMethodIndex];
+	}
+
+	inline void RegisterForActiveObjChange(Function<void()>&& callback)
+	{
+		this->objChangeCallback = Forward<Function<void()>>(callback);
 	}
 
 	inline void SetActiveDBIndex(uint32 index)
@@ -43,6 +53,12 @@ public:
 	inline void SetActiveFilterMethodIndex(uint32 index)
 	{
 		this->filterMethodIndex = index;
+	}
+
+	inline void SetActiveObject(Object* object)
+	{
+		this->activeObject = object;
+		this->objChangeCallback();
 	}
 
 	//Functions
@@ -57,9 +73,11 @@ private:
 	//Members
 	uint32 activeDBIndex;
 	uint32 filterMethodIndex;
+	Object* activeObject;
+	Function<void()> objChangeCallback;
 
 	//Constructor
-	inline UIController() : activeDBIndex(Natural<uint32>::Max()), filterMethodIndex(Natural<uint32>::Max())
+	inline UIController() : activeDBIndex(Unsigned<uint32>::Max()), filterMethodIndex(Unsigned<uint32>::Max()), activeObject(nullptr)
 	{
 	}
 };
