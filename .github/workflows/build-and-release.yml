@@ -2,7 +2,7 @@ name: Build Linux x86-64
 
 on:
   push:
-    branches: [ "master", "pipeline" ]
+    branches: [ "master" ]
   pull_request:
     branches: [ "master" ]
 
