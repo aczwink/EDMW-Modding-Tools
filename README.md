@@ -1,4 +1,5 @@
 # EDMW-Modding-Tools
+[![Build Linux x86-64](https://github.com/aczwink/EDMW-Modding-Tools/actions/workflows/build-and-release.yml/badge.svg)](https://github.com/aczwink/EDMW-Modding-Tools/actions/workflows/build-and-release.yml)
 Modding tools for the game Empires: Dawn of the Modern World
 
 # Documentation
