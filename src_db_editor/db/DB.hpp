@@ -25,77 +25,11 @@
 //Namespaces
 using namespace StdXX;
 
-//Global variables
-extern ConfigurationFile g_settings;
-
 class DB
 {
 public:
-	//Constructor
-	inline DB(const String &name, const XML::Element& dbElement) : repeating(false), isLoaded(false), name(name), objectScheme(nullptr)
-	{
-		this->ParseXML(dbElement);
-	}
-
-	//Methods
-	void Load();
-
-	//Inline
-	inline const DynamicArray<uint32> &GetFilterableFields() const
-	{
-		return this->filterableFields;
-	}
-
-	inline const DynamicArray<const DBField*>& GetFlattenedFields() const
-	{
-		return this->flattenedFields;
-	}
-
-	inline const String &GetName() const
-	{
-		return this->name;
-	}
-
-	inline uint32 GetNumberOfObjects() const
-	{
-		return this->root.GetNumberOfChildren();
-	}
-
-	inline const Object& GetObject(uint32 index) const
-	{
-		return this->root.GetChild(index);
-	}
-
-	inline const DynamicArray<DBField>& GetObjectScheme() const
-	{
-		return *this->objectScheme;
-	}
-
-	inline bool IsLoaded() const
-	{
-		return this->isLoaded;
-	}
-
 	//Functions
 	static String LoadLanguageString(uint32 resourceId, uint8 langDllNumber);
-
-private:
-	//Members
-	bool repeating;
-	bool isLoaded;
-	String name;
-	DynamicArray<DBField> fields;
-	Map<String, DynamicArray<DBField>> types;
-	DynamicArray<uint32> filterableFields;
-	DynamicArray<DBField>* objectScheme;
-	DynamicArray<const DBField*> flattenedFields;
-	Object root;
-
-	//Methods
-	DynamicArray<const DBField*> FlattenFields(const DynamicArray<DBField>& fields) const;
-	void LoadFields(Object& object, const DynamicArray<DBField>& fields, Map<String, uint32>& virtuals, DataReader& reader, TextReader& textReader);
-	DynamicArray<DBField> ParseFields(const XML::Element& element);
-	void ParseXML(const XML::Element& dbElement);
 
 	//Inline
 	inline Path GetPath() const

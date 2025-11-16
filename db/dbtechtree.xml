@@ -1,49 +1,53 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<Database>
-  <Define type="Tech">
-    <Field type="char" name="Identifier" count="100" filterable="yes" />
-    <Field type="uint32" name="Unknown (Unique)" />
-    <Field type="uint32" name="Tech ID" />
-    <Field type="uint32" name="Start Epoch Id" />
-    <Field type="uint32" name="End Epoch Id" />
-    <Field type="uint32" name="Unknown" count="2" />
-    <Field type="uint32" name="Wood cost" />
-    <Field type="uint32" name="Stone cost" />
-    <Field type="uint32" name="Gold cost" />
-    <Field type="uint32" name="Unknown" comment="Might be a leftover from Empire Earth: Iron cost?! Not used in the game." />
-    <Field type="uint32" name="Food cost" />
-    <Field type="uint32" name="Build Speed" comment="Ingame build speed = (this value) x Coef.; Coef is: 1 Slow, ? Normal, ? Fast, 0.4 Very Fast ingame speed" />
-    <Field type="uint32" name="Unknown" count="5" />
-    <Field type="uint32" name="Button Id" />
-    <Field type="uint32" name="Unknown" />
-    <Field type="uint32" name="String Id" language="2" />
-    <Field type="uint32" name="Unknown" count="6" />
-    <Field type="uint32" name="Phoenix-civilization-table Id" />
-    <Field type="uint32" name="Unknown" />
-    <Field type="uint32" name="Amount" comment="How many techs you get when purchasing this" />
-    <Field type="uint32" name="Unknown" count="4" />
-    <Field type="uint32" name="Prerequisite String Id 1" language="1" />
-    <Field type="uint32" name="Prerequisite String Id 2" language="1" />
-    <Field type="uint32" name="Tooltip String Id" language="1" />
-    <Field type="float32" name="Unknown" count="4" />
-    <Field type="bool" name="Unknown" />
-    <Field type="bool" name="Editor-only" comment="false means that unit is buildable" />
-    <Field type="bool" name="Unknown" count="2" />
-    <Field type="uint32" name="Unknown" count="40" />
-    <Field type="uint32" name="Unknown" comment="there seems to be a link between this value and unknown long 4 in dbobjects" />
-    <Field type="uint32" name="Unknown" count="2" />
-    <Field type="uint32" virtual="#unknownListLen1" />
-    <Field type="uint32" name="Unknown Additionals 1" count="#unknownListLen1" comment="could be a building id? (i.e. dbobjects)" />
-    <Field type="uint32" virtual="#unknownListLen2" />
-    <Field type="uint32" name="Unknown Additionals 2" count="#unknownListLen2" comment="when is unknown additionals 2 needed?" />
-  </Define>
+<List techtree="true">
+  <Object id="techId">
+    <Property type="char" name="identifier" title="Identifier" count="100" filterable="yes" />
+    <Property type="uint32" name="id1" title="Unknown (Unique)" comment="" />
+    <Property type="uint32" name="techId" title="Tech ID" comment="" />
+    <Property type="uint32" name="startEpochId" title="Start Epoch Id" comment="" />
+    <Property type="uint32" name="endEpochId" title="End Epoch Id" comment="" />
+    <Property type="uint32" name="unknown1" title="unknown1" count="2" comment="" />
+    <Property type="uint32" name="costWood" title="Wood cost" comment="" />
+    <Property type="uint32" name="costStone" title="Stone cost" comment="" />
+    <Property type="uint32" name="costGold" title="Gold cost" comment="" />
+    <Property type="uint32" name="costUnknown" title="Unknown" comment="Might be a leftover from Empire Earth: Iron cost?! Not used in the game." />
+    <Property type="uint32" name="costFood" title="Food cost" comment="" />
+    <Property type="uint32" name="buildSpeed" title="Build Speed" comment="Ingame build speed = (this value) x Coef.; Coef is: 1 Slow, ? Normal, ? Fast, 0.4 Very Fast ingame speed" />
+    <Property type="uint32" name="unknown3" title="unknown3" count="5" comment="" />
+    <Property type="uint32" name="buttonId" title="Button Id" comment="" />
+    <Property type="uint32" name="unknown4" title="Unknown Long x" comment="" />
+    <Property type="uint32" name="stringId" title="String Id" comment="" language="2" />
+    <Property type="uint32" name="unknown5" title="unknown5" count="6" comment="" />
+    <Property type="uint32" name="phoenixCivTableId" title="Phoenix-civilization-table Id" comment="" />
+    <Property type="uint32" name="unknown8" title="Unknown 8" comment="" />
+    <Property type="uint32" name="amount" title="Amount" comment="How many techs you get when purchasing this" />
+    <Property type="uint32" name="unknown6" title="unknown6" count="4" comment="" />
+    <Property type="uint32" name="prerequisiteStringId1" title="Prerequisite String Id 1" comment="" language="1" />
+    <Property type="uint32" name="prerequisiteStringId2" title="Prerequisite String Id 2" comment="" language="1" />
+    <Property type="uint32" name="toolTipStringId" title="Tooltip String Id" comment="" language="1" />
+    <Property type="float32" name="unknownFloat30" title="Unknown Float 30" comment="" />
+    <Property type="float32" name="unknownFloat31" title="Unknown Float 31" comment="" />
+    <Property type="float32" name="unknownFloat32" title="Unknown Float 32" comment="" />
+    <Property type="float32" name="unknownFloat33" title="Unknown Float 33" comment="" />
+    <Property type="bool" name="unknownBool1" title="Unknown Bool 1" comment="" />
+    <Property type="bool" name="editorOnly" title="Editor-only" comment="false means that unit is buildable" />
+    <Property type="bool" name="unknownBool3" title="Unknown Bool 3" comment="" />
+    <Property type="bool" name="unknownBool4" title="Unknown Bool 4" comment="" />
+    <Property type="uint32" name="unknown" title="unknown" count="40" comment="" />
+    <Property type="uint32" name="unknown7" title="Unknown 7" comment="there seems to be a link between this value and unknown long 4 in dbobjects" />
+    <Property type="uint32" name="unknown_rest" title="unknown_rest" count="2" comment="" />
+    <Property type="uint32[]" name="unknownAdditionals1" title="Unknown Additionals 1" comment="could be a building id (like unknown7) (i.e. dbobjects)" />
+    <Property type="uint32[]" name="unknownAdditionals2" title="Unknown Additionals 2" comment="when is unknown additionals 2 needed?" />
+  </Object>
 
+  <!--
   <Structure repeating="true">
     <Field type="uint32" virtual="#techs" />
-    <!-- The epoch tech -->
+    - The epoch tech
     <Tech>
-      <!-- The techs for the epoch -->
+      The techs for the epoch
       <Tech count="#techs"></Tech>
     </Tech>
   </Structure>
-</Database>
+  -->
+</List>

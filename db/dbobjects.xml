@@ -1,60 +1,152 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<Database>
-  <Define type="Object">
-    <Field type="char" name="Identifier" count="100" filterable="yes" />
-    <Field type="uint32" name="Unknown (Id?)" comment="(Unique except 0)" />
-    <Field type="uint32" name="Family Id" />
-    <Field type="uint32" name="Unknown" count="2" />
-    <Field type="uint32" name="Id" />
-    <Field type="uint32" name="Lifepoints" />
-    <Field type="uint32" name="Unknown" comment="1 for some ships... 0 otherwise" />
-    <Field type="float32" name="Minimum attack range" />
-    <Field type="float32" name="Maximum attack range" />
-    <Field type="float32" name="Line of sight" />
-    <Field type="float32" name="Reload time" />
-    <Field type="float32" name="Detonation radius" />
-    <Field type="float32" name="Velocity" />
-    <Field type="float32" name="Acceleration" comment="acceleration = deceleration" />
-    <Field type="float32" name="Unknown" count="2" comment="has something to do with turning speed" />
-    <Field type="float32" name="Turret turn speed" />
-    <Field type="float32" name="Unknown" />
-    <Field type="uint32" name="Unknown" comment="1 for airplanes, else 0" />
-    <Field type="uint32" name="Fuel Capacity" comment="In Action Mode +50%" />
-    <Field type="float32" name="Unknown" comment="seems to be 1 for some ships, else 0" />
-    <Field type="float32" name="Unknown" comment="the bigger the value, the less the unit needs to turn to attack" />
-    <Field type="uint32" name="Unknown" />
-    <Field type="uint32" name="Weapon to hit id" />
-    <Field type="uint32" name="Damage" />
-    <Field type="uint32" name="Armor against shock" />
-    <Field type="uint32" name="Armor against arrows" />
-    <Field type="uint32" name="Armor against pierce" />
-    <Field type="uint32" name="Armor against guns" />
-    <Field type="uint32" name="Unknown" count="2" />
-    <Field type="uint32" name="Projectile object Id" />
-    <Field type="uint32" name="Target Mode" comment="Some kind of pattern on what can be targeted" />
-    <Field type="uint32" name="Unknown" comment="mostly 1, zero for stone and gold mines; cavalier and leo 451 have special values... could be booleans..." />
-    <Field type="float32" name="Model scale factor" />
-    <Field type="char" name="Type" count="32" />
-    <Field type="uint32" name="Unknown" count="5" comment="mostly 0, could be a bitmask..." />
-    <Field type="uint32" name="Unknown" comment="some kind of type of object? 0 = ambient stuff, 1 = resources stuff, 2 = buildings, 3 = aircraft, 4 = ship, 5 = ground unit, 6 = citizens, repair workers... there are some others also" />
-    <Field type="uint32" name="String Table Id" language="2" />
-    <Field type="uint32" name="Button Id" />
-    <Field type="uint32" name="Graphics Id" />
-    <Field type="float32" name="Building rate" comment="could be close to ms?! However time between amount is built" />
-    <Field type="float32" name="Unknown" comment="for sure also a rate... iron from empire earth?" />
-    <Field type="float32" name="Field food gather rate" comment="" />
-    <Field type="float32" name="Gold gather rate" comment="could be close to ms?! However time until 1 gold unit is picked" />
-    <Field type="float32" name="Stone gather rate" comment="could be close to ms?! However time until 1 stone unit is picked" />
-    <Field type="float32" name="Wood gather rate" comment="" />
-    <Field type="float32" name="Animal food gather rate" comment="also fish" />
-    <Field type="float32" name="Tree food gather rate" comment="" />
-    <Field type="uint32" name="Constant FF FF FF FF" constant="4294967295" count="6" />
-    <Field type="uint32" name="Unknown" comment="2 for citizens, 0 otherwise" />
-    <!--TODO: CONTINUE HERE-->
-  </Define>
-  
-  <Structure>
-    <Field type="uint32" virtual="#objects" />
-    <Object></Object>
-  </Structure>
-</Database>
+<List>
+  <Object id="id">
+    <Property type="char" name="identifier" title="Identifier" count="100" filterable="yes" />
+    <Property type="uint32" name="unknownLong4" title="Unknown (Id?)" comment="(Unique except 0)" />
+    <Property type="uint32" name="familyId" title="Family Id" />
+    <Property type="uint32" name="unknownLong2" title="Unknown" count="2" />
+    <Property type="uint32" name="id" title="Id" />
+    <Property type="uint32" name="lifepoints" title="Lifepoints" />
+    <Property type="uint32" name="unknownLong5" title="Unknown" comment="1 for some ships... 0 otherwise" />
+    <Property type="float32" name="minimumAttackRange" title="Minimum attack range" />
+    <Property type="float32" name="maximumAttackRange" title="Maximum attack range" />
+    <Property type="float32" name="lineOfSight" title="Line of sight" />
+    <Property type="float32" name="reloadTime" title="Reload time" />
+    <Property type="float32" name="detonationRadius" title="Detonation radius" />
+    <Property type="float32" name="velocity" title="Velocity" />
+    <Property type="float32" name="acceleration" title="Acceleration" comment="acceleration = deceleration" />
+    <Property type="float32" name="unknownFloat6" title="Unknown" count="2" comment="has something to do with turning speed" />
+    <Property type="float32" name="turretTurnSpeed" title="Turret turn speed" />
+    <Property type="float32" name="unknownFloat1" title="Unknown" />
+    <Property type="uint32" name="unknownLong10" title="Unknown" comment="1 for airplanes, else 0" />
+    <Property type="uint32" name="fuelCapacity" title="Fuel Capacity" comment="In Action Mode +50%" />
+    <Property type="float32" name="unknownLong11" title="Unknown" comment="seems to be 1 for some ships, else 0" />
+    <Property type="float32" name="unknownFloat8" title="Unknown" comment="the bigger the value, the less the unit needs to turn to attack" />
+    <Property type="uint32" name="unknownLong12" title="Unknown" />
+    <Property type="uint32" name="weaponToHitId" title="Weapon to hit id" />
+    <Property type="uint32" name="damage" title="Damage" />
+    <Property type="uint32" name="armorAgainstShock" title="Armor against shock" />
+    <Property type="uint32" name="armorAgainstArrows" title="Armor against arrows" />
+    <Property type="uint32" name="armorAgainstPierce" title="Armor against pierce" />
+    <Property type="uint32" name="armorAgainstGuns" title="Armor against guns" />
+    <Property type="uint32" name="unknownLong17" title="Unknown" count="2" />
+    <Property type="uint32" name="projectileObjectId" title="Projectile object Id" />
+    <Property type="uint32" name="targetFlags" title="Target Mode" comment="Some kind of pattern on what can be targeted" />
+    <Property type="uint32" name="unknownLong20" title="Unknown" comment="mostly 1, zero for stone and gold mines; cavalier and leo 451 have special values... could be booleans..." />
+    <Property type="float32" name="modelScaleFactor" title="Model scale factor" />
+    <Property type="char" name="type" title="Type" count="32" />
+    <Property type="uint32" name="unknownLong21" title="Unknown" count="5" comment="mostly 0, could be a bitmask..." />
+    <Property type="uint32" name="unknownLong26" title="Unknown" comment="some kind of type of object? 0 = ambient stuff, 1 = resources stuff, 2 = buildings, 3 = aircraft, 4 = ship, 5 = ground unit, 6 = citizens, repair workers... there are some others also" />
+    <Property type="uint32" name="stringTableId" title="String Table Id" language="2" />
+    <Property type="uint32" name="buttonId" title="Button Id" />
+    <Property type="uint32" name="graphicsId" title="Graphics Id" />
+    <Property type="float32" name="buildingRate" title="Building rate" comment="could be close to ms?! However time between amount is built" />
+    <Property type="float32" name="unknownFloat200" title="Unknown" comment="for sure also a rate... iron from empire earth?" />
+    <Property type="float32" name="fieldFoodGatherRate" title="Field food gather rate" comment="" />
+    <Property type="float32" name="goldGatherRate" title="Gold gather rate" comment="could be close to ms?! However time until 1 gold unit is picked" />
+    <Property type="float32" name="stoneGatherRate" title="Stone gather rate" comment="could be close to ms?! However time until 1 stone unit is picked" />
+    <Property type="float32" name="woodGatherRate" title="Wood gather rate" comment="" />
+    <Property type="float32" name="animalFoodGatherRate" title="Animal food gather rate" comment="also fish" />
+    <Property type="float32" name="treeFoodGatherRate" title="Tree food gather rate" comment="" />
+    <Property type="uint32" name="constMax" title="Constant FF FF FF FF" constant="4294967295" count="6" />
+    <Property type="uint32" name="unknown8" title="Unknown" comment="2 for citizens, 0 otherwise" />
+    <Property type="int32" name="buttonIdLeftPanel_BottomLeft" title="Button id left panel - Bottom left" comment="-1 = none; for some reason this is not a button id from dbbuttons" />
+    <Property type="int32" name="buttonIdLeftPanel_BottomCenter" title="Button id left panel - Bottom center" comment="-1 = none; for some reason this is not a button id from dbbuttons" />
+    <Property type="int32" name="buttonIdLeftPanel_BottomRight" title="Button id left panel - Bottom right" comment="-1 = none; for some reason this is not a button id from dbbuttons" />
+    <Property type="int32" name="buttonIdLeftPanel_MiddleLeft" title="Button id left panel - Middle left" comment="-1 = none; for some reason this is not a button id from dbbuttons" />
+    <Property type="int32" name="buttonIdLeftPanel_MiddleCenter" title="Button id left panel - Middle center" comment="-1 = none; for some reason this is not a button id from dbbuttons" />
+    <Property type="int32" name="buttonIdLeftPanel_MiddleRight" title="Button id left panel - Middle right" comment="-1 = none; for some reason this is not a button id from dbbuttons" />
+    <Property type="int32" name="buttonIdLeftPanel_TopLeft" title="Button id left panel - Top left" comment="-1 = none; for some reason this is not a button id from dbbuttons" />
+    <Property type="int32" name="buttonIdLeftPanel_TopCenter" title="Button id left panel - Top center" comment="-1 = none; for some reason this is not a button id from dbbuttons" />
+    <Property type="int32" name="buttonIdLeftPanel_TopRight" title="Button id left panel - Top right" comment="-1 = none; for some reason this is not a button id from dbbuttons" />
+    <Property type="uint32" name="unknown9" title="Unknown 9" comment="" />
+    <Property type="uint32" name="requiredSpace" title="Required space" comment="which measurement unit?!" />
+    <Property type="uint32" name="resourceType" title="Resource Type" comment="0 = none; 1 = unknown?; 2 = food; 3 = wood; 4 = stone; 5 = gold" />
+    <Property type="float32" name="resourceAmount" title="Resource Amount" comment="" />
+    <Property type="uint32" name="unknownLong55" title="Unknown Long 55" comment="mostly 0" />
+    <Property type="uint32" name="unknownLong56" title="Unknown Long 56" comment="mostly 0, sometimes 32-bit MAX, rarely something else" />
+    <Property type="float32" name="unknownFloat55" title="Unknown Float 55" comment="" />
+    <Property type="uint32" name="populationCount" title="Population count" comment="" />
+    <Property type="uint32" name="transportCount" title="Transport count" comment="" />
+    <Property type="bool" name="showAttackRadius" title="Show attack radius in HUD" comment="" />
+    <Property type="bool" name="showRepairValue" title="Show repair value in HUD" comment="" />
+    <Property type="bool" name="showArmorAgainstShock" title="Show armor against shock value in HUD" comment="" />
+    <Property type="bool" name="showArmorAgainstPierce" title="Show armor against pierce value in HUD" comment="" />
+    <Property type="bool" name="showArmorAgainstArrows" title="Show armor against arrows value in HUD" comment="" />
+    <Property type="bool" name="showArmorAgainstLaser" title="Show armor against laser value in HUD" comment="" />
+    <Property type="bool" name="showArmorAgainstGuns" title="Show armor against guns value in HUD" comment="" />
+    <Property type="bool" name="showArmorAgainstMissiles" title="Show armor against missiles value in HUD" comment="" />
+    <Property type="bool" name="showAttackRange" title="Show attack range in HUD" comment="" />
+    <Property type="bool" name="unknownBool32" title="Unknown Bool 32" comment="only set for german armory and enligsh mary something ship" />
+    <Property type="bool" name="unknownBool33" title="Unknown Bool 33" comment="" />
+    <Property type="bool" name="unknownBool34" title="Unknown Bool 34" comment="" />
+    <Property type="uint32" name="unknown16" title="Unknown 16" comment="" />
+    <Property type="float32" name="unknownFloat201" title="Unknown Float 201" comment="always 0, except for french communications truck" />
+    <Property type="uint32" name="unknown17" title="Unknown 17" comment="" />
+    <Property type="float32" name="steeringRotation" title="Steering rotation" comment="unit?" />
+    <Property type="uint32" name="unknown18" title="Unknown 18" comment="" />
+    <Property type="float32" name="altitude" title="Altitude" comment="unit? it is some kind of scale factor" />
+    <Property type="uint32" name="unknown10" count="4" title="Unknown 10" comment="" />
+    <Property type="bool" name="unknownBool21" title="Unknown Bool 21" comment="" />
+    <Property type="bool" name="unknownBool22" title="Unknown Bool 22" comment="" />
+    <Property type="bool" name="unknownBool23" title="Unknown Bool 23" comment="" />
+    <Property type="bool" name="unknownBool24" title="Unknown Bool 24" comment="" />
+    <Property type="uint32" name="bombsPerRun" title="Dropped Bombs per Run" comment="" />
+    <Property type="uint32" name="unknownLong71" title="Unknown Long 71" comment="" />
+    <Property type="uint32" name="unknownLong72" title="Unknown Long 72" comment="" />
+    <Property type="float32" name="unknownFloat70" title="Unknown Float 70" comment="" />
+    <Property type="float32" name="unknownFloat71" title="Unknown Float 71" comment="" />
+    <Property type="uint32" name="unknownLong73" title="Unknown Long 73" comment="" />
+    <Property type="float32" name="unknownFloat72" title="Unknown Float 72" comment="" />
+    <Property type="float32" name="unknownFloat73" title="Unknown Float 73" comment="" />
+    <Property type="uint32" name="unknownLong74" title="Unknown Long 74" comment="" />
+    <Property type="float32" name="unknownFloat74" title="Unknown Float 74" comment="" />
+    <Property type="uint32" name="unknownLong75" title="Unknown Long 75" comment="" />
+    <Property type="uint32" name="bombsCount" title="Number of carried Bombs" comment="" />
+    <Property type="uint32" name="unknown12" count="11" title="Unknown 12" comment="" />
+    <Property type="float32" name="unknownFloat76" title="Unknown Float 76" comment="" />
+    <Property type="uint32" name="unknown13" count="5" title="Unknown 13" comment="" />
+    <Property type="uint32" name="unitStringId1" title="Unit String Id 1" comment="" language="1" />
+    <Property type="uint32" name="unitStringId2" title="Unit String Id 2" comment="" language="1" />
+    <Property type="int32" name="tooltipStringId" title="Tooltip String Id" comment="" language="1" />
+    <Property type="uint32" name="appendNameStringId" title="Appended Name string Id" comment="The following will be appended to the units name in Szenario-Editor (-1 = nothing): " language="2" />
+    <Property type="uint32" name="unknownarr10" count="26" title="unknownarr10" comment="" />
+    <Property type="float32" name="unknownFloat118" title="Unknown Float 118" comment="" />
+    <Property type="float32" name="unknownFloat119" title="Unknown Float 119" comment="" />
+    <Property type="float32" name="unknownFloat120" title="Unknown Float 120" comment="" />
+    <Property type="bool" name="unknownBool1" title="Unknown Bool 1" comment="" />
+    <Property type="bool" name="unknownBool2" title="Unknown Bool 2" comment="" />
+    <Property type="bool" name="unknownBool3" title="Unknown Bool 3" comment="" />
+    <Property type="bool" name="unknownBool4" title="Unknown Bool 4" comment="" />
+    <Property type="bool" name="unknownBool5" title="Unknown Bool 5" comment="" />
+    <Property type="bool" name="unknownBool6" title="Unknown Bool 6" comment="" />
+    <Property type="bool" name="unknownBool7" title="Unknown Bool 7" comment="" />
+    <Property type="bool" name="unknownBool8" title="Unknown Bool 8" comment="" />
+    <Property type="bool" name="unknownBool9" title="Unknown Bool 9" comment="" />
+    <Property type="bool" name="unknownBool10" title="Unknown Bool 10" comment="" />
+    <Property type="bool" name="unknownBool11" title="Unknown Bool 11" comment="" />
+    <Property type="bool" name="unknownBool12" title="Unknown Bool 12" comment="" />
+    <Property type="bool" name="unknownBool13" title="Unknown Bool 13" comment="" />
+    <Property type="bool" name="unknownBool14" title="Unknown Bool 14" comment="" />
+    <Property type="bool" name="unknownBool15" title="Unknown Bool 15" comment="" />
+    <Property type="bool" name="unknownBool16" title="Unknown Bool 16" comment="" />
+    <Property type="uint32" name="unknownarr11" count="8" title="unknownarr11" comment="" />
+    <Property type="float32" name="unknownFloat155" title="Unknown Float 155" comment="" />
+    <Property type="uint32" name="unknown15" count="2" title="unknownarr11" comment="" />
+    <Property type="bool" name="unknownBool17" title="Unknown Bool 17" comment="" />
+    <Property type="bool" name="unknownBool18" title="Unknown Bool 18" comment="" />
+    <Property type="bool" name="unknownBool19" title="Unknown Bool 19" comment="" />
+    <Property type="bool" name="unknownBool20" title="Unknown Bool 20" comment="" />
+    <Property type="uint32" name="unknownarr12" count="14" title="unknownarr12" comment="" />
+    <Property type="float32" name="unknownFloat151" title="Unknown Float 151" comment="" />
+    <Property type="float32" name="unknownFloat152" title="Unknown Float 152" comment="" />
+    <Property type="float32" name="unknownFloat153" title="Unknown Float 153" comment="" />
+    <Property type="uint32" name="unknownLong201" title="Unknown Long 201" comment="" />
+    <Property type="float32" name="unknownFloat154" title="Unknown Float 154" comment="" />
+    <Property type="uint32" name="unknown19" count="4" title="unknown19" comment="" />
+    <Property type="uint32" name="techId" title="Tech Id" comment="" />
+    <Property type="uint32" name="unknown14" count="58" title="unknown14" comment="" />
+    <Property type="uint32" name="constructionTechIds" count="199" title="Construction tech id" comment="tech for a building, that the unit can construct" />
+    <Property type="uint32" name="alwaysMax" title="Constant FF FF FF FF" constant="4294967295" />
+  </Object>
+</List>
